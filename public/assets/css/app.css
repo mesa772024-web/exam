@@ -1,0 +1,11 @@
+body {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.brand-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+.exam-nav button {
+    text-align: center;
+}
