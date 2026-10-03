@@ -1,0 +1,72 @@
+/* Ambient motion layer — animated backgrounds, card spotlights, finishing touches.
+   Colours are the site palette (Baghdad Al Hayat copy is mapped to burgundy). */
+:root{
+  --amb-a:#b42865;          /* brand */
+  --amb-b:#691237;          /* deep brand */
+  --amb-c:#f08fba;          /* light brand (used on dark) */
+  --amb-glow-a:rgba(180,40,101,.16);
+  --amb-glow-b:rgba(105,18,55,.12);
+  --amb-glow-c:rgba(240,143,186,.14);
+}
+
+/* ---------- host sections ---------- */
+.amb-host{position:relative;isolation:isolate}
+.amb-layer{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;border-radius:inherit;opacity:0;transition:opacity 1.2s ease}
+.amb-layer.amb-on,.amb-still .amb-layer{opacity:1}
+.amb-canvas{position:absolute;inset:0;display:block}
+
+/* soft aurora blobs drifting behind the network */
+.amb-blob{position:absolute;border-radius:50%;will-change:transform;animation:ambDrift 26s ease-in-out infinite alternate}
+.amb-blob.b1{width:46vmax;height:46vmax;top:-18vmax;inset-inline-end:-12vmax;background:radial-gradient(circle,var(--amb-glow-a),transparent 68%)}
+.amb-blob.b2{width:40vmax;height:40vmax;bottom:-20vmax;inset-inline-start:-14vmax;background:radial-gradient(circle,var(--amb-glow-b),transparent 68%);animation-duration:32s;animation-delay:-8s}
+.amb-blob.b3{width:26vmax;height:26vmax;top:30%;left:38%;background:radial-gradient(circle,var(--amb-glow-c),transparent 70%);animation-duration:38s;animation-delay:-16s;opacity:.8}
+@keyframes ambDrift{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  33%{transform:translate3d(4vmax,3vmax,0) scale(1.08)}
+  66%{transform:translate3d(-3vmax,5vmax,0) scale(.95)}
+  100%{transform:translate3d(2vmax,-3vmax,0) scale(1.04)}
+}
+/* dark & brand blocks: brighter glow, light network */
+.amb-dark .amb-blob.b1{background:radial-gradient(circle,rgba(180,40,101,.22),transparent 66%)}
+.amb-dark .amb-blob.b2{background:radial-gradient(circle,rgba(240,143,186,.10),transparent 66%)}
+.amb-brand .amb-blob.b1{background:radial-gradient(circle,rgba(255,255,255,.16),transparent 66%)}
+.amb-brand .amb-blob.b2{background:radial-gradient(circle,rgba(240,143,186,.18),transparent 66%)}
+.amb-brand .amb-blob.b3{background:radial-gradient(circle,rgba(255,255,255,.10),transparent 70%)}
+/* the inner-page hero already has its own glow: keep the blobs a touch calmer there */
+.inner-hero.amb-host .amb-blob{opacity:.75}
+/* rounded brand block (home contact card) */
+#contact .contact.amb-host{overflow:hidden}
+
+/* ---------- card spotlight (desktop pointer) ---------- */
+.amb-card{position:relative;isolation:isolate}
+.amb-spot{position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s ease;
+  background:radial-gradient(340px circle at var(--amb-x,50%) var(--amb-y,50%),var(--amb-glow-a),transparent 62%)}
+.amb-card:hover>.amb-spot{opacity:1}
+.proof-card.amb-card>.amb-spot,.amb-dark .amb-card>.amb-spot{background:radial-gradient(340px circle at var(--amb-x,50%) var(--amb-y,50%),rgba(240,143,186,.16),transparent 62%)}
+
+/* ---------- scroll progress hairline (inner pages) ---------- */
+.amb-progress{position:fixed;z-index:1001;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;
+  background:linear-gradient(90deg,var(--amb-b),var(--amb-a),var(--amb-c));box-shadow:0 0 12px var(--amb-glow-a);pointer-events:none}
+html[dir="rtl"] .amb-progress{transform-origin:right}
+
+/* ---------- finishing touches ---------- */
+html{scroll-behavior:smooth}
+::selection{background:var(--amb-glow-a)}
+:focus-visible{outline-offset:3px}
+/* brand-coloured blocks get a slow sheen */
+:is(.hero-card,.metrics-band .metrics-grid,.quality-highlight .highlight-grid){position:relative;overflow:hidden}
+:is(.hero-card,.metrics-band .metrics-grid,.quality-highlight .highlight-grid)::after{
+  content:"";position:absolute;z-index:3;top:0;bottom:0;width:28%;left:-40%;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);transform:skewX(-18deg);
+  animation:ambSheen 9s cubic-bezier(.45,.05,.35,1) 2s infinite}
+@keyframes ambSheen{0%{left:-40%}24%,100%{left:135%}}
+
+/* ---------- phones ---------- */
+@media (max-width:700px){
+  .amb-blob.b3{display:none}
+}
+/* ---------- reduced motion: still frame, no drifting ---------- */
+@media (prefers-reduced-motion:reduce){
+  .amb-blob,:is(.hero-card,.metrics-band .metrics-grid,.quality-highlight .highlight-grid)::after{animation:none!important}
+  .amb-layer{transition:none}
+}
