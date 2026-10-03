@@ -1,0 +1,1027 @@
+<?php
+declare(strict_types=1);
+require __DIR__ . '/includes/bootstrap.php';
+$locale = current_locale();
+$isAr = $locale === 'ar';
+$languageSwitching = language_switching_enabled();
+?>
+<!doctype html>
+<html lang="<?= h($locale) ?>" dir="<?= $isAr ? 'rtl' : 'ltr' ?>">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="<?= h($isAr ? 'مكتب الحياة العلمي — منظومة متكاملة لتسجيل وتخزين وتوزيع الدواء في العراق. حيث المريض أولويتنا.' : 'Al Hayat Scientific Office — an integrated system for pharmaceutical registration, storage and distribution in Iraq.') ?>">
+  <meta property="og:title" content="مكتب الحياة العلمي | Al Hayat Scientific Office">
+  <meta property="og:description" content="حيث المريض أولويتنا — تسجيل، تخزين، وتوزيع الدواء في العراق.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Al Hayat Scientific Office">
+  <meta name="twitter:description" content="Where the patient is our priority — Baghdad, Iraq.">
+  <meta name="twitter:image" content="assets/og.png">
+  <title><?= $isAr ? 'مكتب الحياة العلمي | Al Hayat Scientific Office' : 'Al Hayat Scientific Office | Where the patient is our priority' ?></title>
+  <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="<?= h(site_url('assets/css/landing-fonts.css')) ?>">
+  <style>
+    :root{
+      --bg:#ffffff;
+      --bg-soft:#f3f9f5;
+      --paper:#eef6f0;
+      --green:#178a54;
+      --green-600:#1e9e5a;
+      --green-500:#28b46b;
+      --green-700:#12693f;
+      --green-100:#e7f5ec;
+      --green-050:#f1faf4;
+      --maroon:#9c2b3e;
+      --maroon-600:#b23a4d;
+      --maroon-050:#fbeef0;
+      --ink:#0e241b;
+      --ink-2:#20362c;
+      --muted:#5c7268;
+      --line:#e3ede7;
+      --line-2:#d5e5db;
+      --display:'IBM Plex Sans Arabic','Inter',sans-serif;
+      --latin:'Sora','Inter',sans-serif;
+      --ease:cubic-bezier(.22,.8,.2,1);
+      --shadow-sm:0 2px 10px rgba(15,74,50,.06);
+      --shadow-md:0 18px 44px rgba(15,74,50,.10);
+      --shadow-lg:0 34px 80px rgba(11,63,42,.16);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg);scroll-padding-top:92px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--display);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    body[data-lang="en"]{font-family:'Inter',sans-serif;direction:ltr}
+    button,a{font:inherit}
+    a{color:inherit}
+    img{display:block;max-width:100%}
+    ::selection{background:var(--green-100);color:var(--green-700)}
+    .en{display:none}
+    body[data-lang="en"] .ar{display:none!important}
+    body[data-lang="en"] .en{display:inline}
+    body[data-lang="en"] .en.block{display:block}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .wrap{max-width:1320px;margin:auto;padding:0 clamp(18px,4vw,54px)}
+
+    /* ===== Navigation ===== */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:80;background:rgba(255,255,255,.86);backdrop-filter:blur(16px) saturate(1.2);border-bottom:1px solid transparent;opacity:0;transform:translateY(-16px);pointer-events:none;transition:opacity .55s var(--ease),transform .55s var(--ease),border-color .35s,box-shadow .35s,background .35s}
+    .nav.visible{opacity:1;transform:none;pointer-events:auto}
+    .nav.scrolled{border-color:var(--line);box-shadow:var(--shadow-sm)}
+    .nav-inner{max-width:1320px;margin:auto;height:76px;padding:0 clamp(18px,4vw,54px);display:flex;align-items:center;justify-content:space-between;gap:22px}
+    .nav-logo{display:flex;align-items:center;text-decoration:none}
+    .nav-logo img{height:44px;width:auto;transition:height .35s}
+    .nav.scrolled .nav-logo img{height:39px}
+    .nav-links{display:flex;align-items:center;gap:clamp(9px,1.25vw,20px);font-size:.76rem;font-weight:600}
+    .nav-links a{text-decoration:none;color:var(--ink-2);position:relative;white-space:nowrap;transition:color .25s;padding:6px 2px}
+    .nav-links a::after{content:"";position:absolute;inset-inline-start:0;bottom:0;width:100%;height:2px;background:var(--green-500);border-radius:2px;transform:scaleX(0);transform-origin:inline-start;transition:transform .35s var(--ease)}
+    .nav-links a:hover{color:var(--green-700)}
+    .nav-links a:hover::after{transform:scaleX(1)}
+    .nav-group{position:relative}.nav-group>a small{font:700 .62rem var(--latin);color:var(--green-600)}
+    .nav-dropdown{position:absolute;top:calc(100% + 16px);inset-inline-start:50%;transform:translate(-50%,8px);min-width:210px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-md);opacity:0;visibility:hidden;pointer-events:none;transition:.25s var(--ease)}
+    [dir="rtl"] .nav-dropdown{transform:translate(50%,8px)}.nav-dropdown::before{content:"";position:absolute;left:0;right:0;top:-18px;height:18px}.nav-dropdown a{display:block;padding:8px 10px;border-radius:9px;font-size:.7rem}.nav-dropdown a::after{display:none}.nav-dropdown a:hover{background:var(--green-050)}
+    .nav-group:hover .nav-dropdown,.nav-group:focus-within .nav-dropdown{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}[dir="rtl"] .nav-group:hover .nav-dropdown,[dir="rtl"] .nav-group:focus-within .nav-dropdown{transform:translate(50%,0)}.nav-dropdown-wide{display:grid;grid-template-columns:1fr 1fr;min-width:390px}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .lang{width:48px;height:40px;border-radius:999px;border:1px solid var(--line-2);background:#fff;color:var(--ink);cursor:pointer;display:grid;place-items:center;font:700 .74rem var(--latin);transition:.25s}
+    .lang:hover{background:var(--green-700);color:#fff;border-color:var(--green-700)}
+    .nav-cta{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;text-decoration:none;background:var(--green-700);color:#fff;font-size:.8rem;font-weight:700;transition:transform .3s var(--ease),box-shadow .3s,background .3s}
+    .nav-cta:hover{transform:translateY(-2px);background:var(--green);box-shadow:0 12px 26px rgba(18,105,63,.28)}
+    .menu-btn{display:none;width:44px;height:44px;border:1px solid var(--line-2);border-radius:12px;background:#fff;color:var(--ink);cursor:pointer;position:relative}
+    .menu-btn::before,.menu-btn::after{content:"";position:absolute;left:12px;width:20px;height:2px;border-radius:2px;background:currentColor;transition:.3s}
+    .menu-btn::before{top:17px}.menu-btn::after{top:25px}
+    .menu-btn.open::before{top:21px;transform:rotate(45deg)}.menu-btn.open::after{top:21px;transform:rotate(-45deg)}
+
+    /* ===== Cinematic scroll intro ===== */
+    .intro{height:440vh;position:relative;background:#07130e}
+    .story-stage{position:sticky;top:0;height:100vh;height:100svh;background:#07130e;overflow:hidden;isolation:isolate;--px:50%;--py:50%}
+    .story-stage::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;background:radial-gradient(circle at var(--px) var(--py),rgba(92,226,157,.10),transparent 26%);mix-blend-mode:screen}
+    .story-scene{position:absolute;inset:clamp(12px,2.2vw,30px);border-radius:clamp(16px,2vw,26px);overflow:hidden;opacity:0;pointer-events:none;will-change:opacity;background:#0a1712;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+    .story-scene:first-child{opacity:1}
+    .story-scene.active{pointer-events:auto}
+    .story-scene>.frame-canvas{position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;filter:saturate(.94) contrast(1.05);transform:scale(var(--cine-zoom,1));transform-origin:center;transition:transform .18s linear}
+    /* animated leaves veil over the opening cinematic (multiply) */
+    .stage-leaves{position:absolute;top:clamp(12px,2.2vw,30px);inset-inline-start:clamp(12px,2.2vw,30px);width:calc(100% - clamp(12px,2.2vw,30px)*2);height:calc(100% - clamp(12px,2.2vw,30px)*2);z-index:5;object-fit:cover;border-radius:clamp(16px,2vw,26px);mix-blend-mode:multiply;opacity:.85;pointer-events:none;transform:scale(var(--leaf-zoom,1));transform-origin:center;transition:transform .18s linear}
+    @media(prefers-reduced-motion:reduce){.stage-leaves{display:none}.story-scene>.frame-canvas{transform:none!important}}
+    #scene0Canvas,#scene2Canvas{background-image:url('assets/intro-poster.jpg')}
+    #scene1Canvas,#scene3Canvas{background-image:url('assets/night-poster.jpg')}
+    .story-scene::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(3,12,8,.66),rgba(3,12,8,.12) 44%,rgba(3,12,8,.30)),radial-gradient(circle at 50% 30%,transparent 32%,rgba(3,13,9,.42) 94%)}
+    .scene-content{position:absolute;z-index:2;inset:0;padding:clamp(90px,8vw,124px) clamp(28px,8vw,120px) clamp(70px,7vw,100px);display:flex;color:#f4f8f3}
+    .scene-eyebrow{font-size:.74rem;font-weight:600;color:#8ff0bb;margin-bottom:18px;letter-spacing:.01em}
+    .scene-center{flex-direction:column;align-items:center;justify-content:flex-start;text-align:center}
+    .scene-center h1{font-size:clamp(2.3rem,5.4vw,5.2rem);font-weight:700;line-height:1.4;margin:0;text-shadow:0 12px 40px rgba(0,0,0,.45)}
+    body[data-lang="en"] .scene-center h1{letter-spacing:-.02em;line-height:1.15}
+    .scene-center h1 em{font-style:normal;color:#8ff0bb}
+    .scene-center p{font-size:.82rem;color:rgba(255,255,255,.72);margin:24px 0 0}
+    .scene-split{align-content:start;align-items:start;display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,90px)}
+    .scene-split h2{font-size:clamp(2rem,4.6vw,4.5rem);line-height:1.5;font-weight:700;margin:0}
+    body[data-lang="en"] .scene-split h2{line-height:1.2;letter-spacing:-.02em}
+    .scene-split p{font-size:clamp(.85rem,1.1vw,1rem);color:rgba(255,255,255,.74);max-width:48ch;margin:0;border-top:1px solid rgba(143,240,187,.4);padding-top:22px}
+    .scene-facts{align-items:center;justify-content:flex-start;flex-direction:column}
+    .scene-title{font-size:clamp(1rem,1.7vw,1.35rem);margin-bottom:24px;color:rgba(255,255,255,.82)}
+    .fact-grid{width:min(880px,100%);display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(255,255,255,.14);border-inline-start:1px solid rgba(255,255,255,.14)}
+    .fact-grid>div{min-height:140px;padding:26px;display:flex;flex-direction:column;justify-content:center;border-inline-end:1px solid rgba(255,255,255,.14);border-bottom:1px solid rgba(255,255,255,.14);background:rgba(4,14,10,.42);backdrop-filter:blur(6px);transition:background .3s,transform .3s}
+    .fact-grid>div:hover{background:rgba(34,142,101,.2);transform:translateY(-3px)}
+    .fact-grid strong{font:800 clamp(1.7rem,3vw,2.8rem) var(--latin);color:#fff;line-height:1}
+    .fact-grid strong i{font-style:normal;color:#8ff0bb}
+    .fact-grid span{font-size:.68rem;color:rgba(255,255,255,.62);margin-top:8px}
+    .scene-final{flex-direction:column;align-items:center;justify-content:flex-start;text-align:center}
+    .scene-final h2{font-size:clamp(2.1rem,4.6vw,4.7rem);line-height:1.45;max-width:900px;font-weight:700;margin:0}
+    body[data-lang="en"] .scene-final h2{line-height:1.2;letter-spacing:-.02em}
+    .scene-actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;justify-content:center}
+    .btn-cine-primary{background:#8ff0bb;color:#07130e}
+    .btn-cine-primary:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(143,240,187,.28)}
+    .btn-cine-ghost{border:1px solid rgba(255,255,255,.26);background:rgba(255,255,255,.06);color:#fff}
+    .btn-cine-ghost:hover{border-color:#fff;background:rgba(255,255,255,.12)}
+    .scene-logo-wrap{position:relative;width:min(340px,58vw);margin:-8px auto 2px;overflow:hidden;pointer-events:none}
+    .scene-logo{position:absolute;top:0;left:0;width:1024px;height:369px;border:0;background:transparent;transform-origin:top left;display:block;filter:drop-shadow(0 12px 34px rgba(0,0,0,.5))}
+    .corner-brand{position:absolute;z-index:12;top:clamp(18px,4vw,32px);inset-inline-start:clamp(18px,5vw,50px);display:flex;align-items:center;background:rgba(255,255,255,.94);padding:8px 15px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 10px 28px rgba(0,0,0,.22);text-decoration:none;opacity:0;transition:opacity .5s var(--ease)}
+    .corner-brand img{height:30px;width:auto;display:block}
+    .scene-switcher{position:absolute;z-index:12;bottom:clamp(26px,5vw,52px);inset-inline-start:clamp(22px,5vw,58px);display:flex;gap:8px;direction:ltr}
+    .scene-switcher button{width:37px;height:30px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(3,12,8,.32);color:rgba(255,255,255,.5);font:600 .55rem var(--latin);cursor:pointer;transition:.3s}
+    .scene-switcher button:hover,.scene-switcher button.active{background:#8ff0bb;border-color:#8ff0bb;color:#07130e;transform:translateY(-2px)}
+    .cine-guide{position:absolute;z-index:12;bottom:clamp(26px,6vh,52px);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(255,255,255,.74);font-size:.66rem;white-space:nowrap}
+    .cine-track{width:1px;height:46px;background:rgba(255,255,255,.22);overflow:hidden;position:relative}
+    .cine-track::after{content:"";position:absolute;top:-100%;left:0;width:1px;height:100%;background:#8ff0bb;animation:drift 1.9s infinite var(--ease)}
+    @keyframes drift{0%{transform:translateY(0)}70%,100%{transform:translateY(200%)}}
+    .cine-progress{position:absolute;z-index:12;top:50%;inset-inline-end:clamp(16px,4vw,48px);transform:translateY(-50%);height:120px;width:1px;background:rgba(255,255,255,.2)}
+    .cine-progress span{position:absolute;top:0;left:0;width:1px;height:0;background:#8ff0bb;box-shadow:0 0 12px rgba(143,240,187,.6)}
+    .cine-progress b{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font:500 .54rem var(--latin);color:rgba(255,255,255,.55)}
+
+    /* ===== Hero ===== */
+    .hero{padding:clamp(92px,10vw,120px) 0 clamp(40px,6vw,70px);position:relative}
+    .hero::before{content:"";position:absolute;inset:0 0 auto;height:60%;background:radial-gradient(60% 90% at 85% 0%,var(--green-050),transparent 70%);z-index:-1}
+    .hero-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(22px,3vw,34px)}
+    .hero-title{font-weight:700;letter-spacing:-.02em;line-height:1.18;margin:0;font-size:clamp(2.1rem,5.6vw,4.15rem);color:var(--ink)}
+    body:not([data-lang="en"]) .hero-title{line-height:1.32;letter-spacing:0}
+    .hero-title em{font-style:normal;color:var(--green-600)}
+    .hero-title .spark{display:inline-block;color:var(--maroon);transform:translateY(-.15em);font-size:.62em}
+    .hero-sub{max-width:340px;color:var(--muted);font-size:clamp(.92rem,1.1vw,1.02rem);margin:0}
+
+    .hero-card{position:relative;border-radius:clamp(26px,3vw,40px);background:linear-gradient(135deg,var(--green-600),var(--green-700));color:#fff;overflow:hidden;box-shadow:var(--shadow-lg);display:grid;grid-template-columns:1.02fr 1.12fr .92fr;isolation:isolate}
+    .hero-card::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(50% 60% at 12% 8%,rgba(255,255,255,.16),transparent 60%),radial-gradient(45% 55% at 92% 100%,rgba(0,0,0,.18),transparent 60%);pointer-events:none}
+    .hc-col{position:relative;z-index:1;padding:clamp(26px,2.6vw,40px)}
+    /* left */
+    .hc-left{display:flex;flex-direction:column}
+    .hc-kicker{display:inline-flex;align-items:center;gap:9px;font-size:.74rem;font-weight:600;color:#d7f3e2;margin-bottom:20px}
+    .hc-kicker::before{content:"";width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.14);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23eafff3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2s6 3 6 9a6 6 0 0 1-12 0c0-3 2-5 3-6'/%3E%3C/svg%3E");background-size:14px;background-repeat:no-repeat;background-position:center}
+    .hc-title{font-size:clamp(1.7rem,2.6vw,2.55rem);font-weight:700;line-height:1.22;letter-spacing:-.02em;margin:0}
+    body:not([data-lang="en"]) .hc-title{line-height:1.4;letter-spacing:0}
+    .hc-copy{color:rgba(255,255,255,.82);font-size:.92rem;margin:16px 0 0;max-width:34ch}
+    .hc-cta{margin-top:auto;padding-top:26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:11px;padding:14px 24px;border-radius:999px;text-decoration:none;font-size:.84rem;font-weight:700;cursor:pointer;border:0;transition:.3s var(--ease)}
+    .btn-light{background:#fff;color:var(--green-700)}
+    .btn-light:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.22)}
+    .btn-brand{background:var(--green-700);color:#fff;box-shadow:0 14px 30px rgba(20,122,72,.2)}
+    .btn-brand:hover{background:var(--green-600);transform:translateY(-3px);box-shadow:0 18px 38px rgba(20,122,72,.26)}
+    .btn-brand .arrow{background:rgba(255,255,255,.16)}
+    .btn .arrow{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--green-700);color:#fff;font-size:.9rem;transition:transform .3s}
+    [dir="rtl"] .btn:hover .arrow{transform:translateX(-4px)}
+    [dir="ltr"] .btn:hover .arrow{transform:translateX(4px)}
+    .hc-proof{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.9)}
+    .hc-proof .num{font:800 1.5rem var(--latin);line-height:1}
+    .hc-proof small{display:block;font-size:.68rem;color:rgba(255,255,255,.72);max-width:16ch;line-height:1.4}
+    /* center image */
+    .hc-media{padding:0;position:relative;min-height:420px;overflow:hidden}
+    .hc-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .hc-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(9,54,36,.5)),linear-gradient(90deg,rgba(20,122,72,.25),transparent 22%);pointer-events:none}
+    [dir="ltr"] .hc-media::after{background:linear-gradient(180deg,transparent 55%,rgba(9,54,36,.5)),linear-gradient(270deg,rgba(20,122,72,.25),transparent 22%)}
+    .hc-badge{position:absolute;z-index:2;bottom:18px;inset-inline-start:18px;display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.28);font:600 .64rem var(--latin);letter-spacing:.12em;color:#fff}
+    .hc-badge i{width:7px;height:7px;border-radius:50%;background:#8ff0bb;box-shadow:0 0 12px #8ff0bb;font-style:normal}
+    /* Real building imagery: gentle zoom + animated leaves veil (multiply) */
+    .kenburns{animation:kenburns 24s ease-in-out infinite alternate;will-change:transform}
+    @keyframes kenburns{from{transform:scale(1.02)}to{transform:scale(1.14)}}
+    .leaf-veil{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;pointer-events:none;opacity:.85;z-index:1}
+    @media(prefers-reduced-motion:reduce){.kenburns{animation:none}.leaf-veil{display:none}}
+    /* right features */
+    .hc-right{background:rgba(255,255,255,.08);border-inline-start:1px solid rgba(255,255,255,.14);display:flex;flex-direction:column;gap:14px}
+    .hc-feats{display:flex;flex-direction:column;gap:6px}
+    .feat{display:flex;align-items:center;gap:13px;padding:11px 6px;border-bottom:1px solid rgba(255,255,255,.12)}
+    .feat:last-child{border-bottom:0}
+    .feat .ico{flex:0 0 auto;width:42px;height:42px;border-radius:13px;background:rgba(255,255,255,.14);display:grid;place-items:center;color:#eafff3}
+    .feat .ico svg{width:21px;height:21px}
+    .feat b{display:block;font-size:.86rem;font-weight:600}
+    .feat span{font-size:.68rem;color:rgba(255,255,255,.68)}
+    .featured{margin-top:auto;background:#fff;color:var(--ink);border-radius:18px;padding:16px;box-shadow:0 14px 30px rgba(0,0,0,.18)}
+    .featured .tag{display:inline-block;font:700 .6rem var(--latin);letter-spacing:.12em;color:var(--maroon);background:var(--maroon-050);padding:5px 10px;border-radius:999px;margin-bottom:12px}
+    .featured h4{margin:0 0 4px;font-size:1rem}
+    .featured p{margin:0;font-size:.72rem;color:var(--muted)}
+    .featured .row{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+    .featured .go{width:38px;height:38px;border-radius:50%;background:var(--green-700);color:#fff;display:grid;place-items:center;text-decoration:none;transition:.3s}
+    .featured .go:hover{background:var(--green);transform:translateY(-2px)}
+
+    /* ===== Trust logos strip ===== */
+    .trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-soft)}
+    .trust-inner{max-width:1320px;margin:auto;padding:22px clamp(18px,4vw,54px);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+    .trust-inner span{font-size:.72rem;font-weight:600;color:var(--muted);letter-spacing:.04em}
+    .trust-badges{display:flex;gap:clamp(14px,3vw,40px);flex-wrap:wrap;align-items:center}
+    .trust-badges b{font:700 .82rem var(--latin);color:var(--green-700);display:flex;align-items:center;gap:8px}
+    .trust-badges b::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--maroon);transform:rotate(45deg)}
+
+    /* ===== Section frame ===== */
+    section.block{padding:clamp(64px,8vw,120px) 0}
+    .eyebrow{display:inline-flex;align-items:center;gap:11px;font-size:.74rem;font-weight:700;color:var(--green-700);margin-bottom:20px;letter-spacing:.02em}
+    .eyebrow{display:none!important}
+    .eyebrow::before{content:"";width:26px;height:2px;border-radius:2px;background:var(--maroon)}
+    h2.sec-title{font-size:clamp(1.8rem,3.6vw,3.05rem);line-height:1.22;letter-spacing:-.02em;margin:0;font-weight:700;color:var(--ink)}
+    body:not([data-lang="en"]) h2.sec-title{line-height:1.4;letter-spacing:0}
+    h2.sec-title .hl{color:var(--green-600)}
+
+    /* ===== Stats ===== */
+    .stats-title{text-align:center;font:800 clamp(1.35rem,2.6vw,2.1rem)/1.35 var(--display);color:var(--ink);letter-spacing:-.01em;max-width:24ch;margin:0 auto clamp(24px,3vw,38px);text-wrap:balance}
+    .stats{background:var(--green-700);color:#fff;border-radius:clamp(22px,2.5vw,32px);padding:clamp(26px,3vw,44px);display:grid;grid-template-columns:repeat(4,1fr);gap:20px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+    .stats::before{content:"";position:absolute;inset:0;background:radial-gradient(40% 80% at 90% 0,rgba(255,255,255,.12),transparent 60%);pointer-events:none}
+    .stat{position:relative;padding-inline-start:20px;border-inline-start:1px solid rgba(255,255,255,.18)}
+    .stat:first-child{border-inline-start:0;padding-inline-start:0}
+    .stat strong{display:block;font:800 clamp(1.8rem,3.4vw,2.9rem) var(--latin);line-height:1;letter-spacing:-.02em}
+    .stat strong i{font-style:normal;color:#8ff0bb}
+    .stat small{display:block;margin-top:9px;font-size:.72rem;color:rgba(255,255,255,.74)}
+
+    /* ===== Vision ===== */
+    .vision-grid{display:grid;grid-template-columns:1.4fr .85fr;gap:clamp(36px,6vw,90px);align-items:center}
+    .vision-grid h2{margin-bottom:22px}
+    .vision-lead{color:var(--muted);font-size:1.02rem;margin:0;max-width:52ch}
+    .vision-aside{border:1px solid var(--line);border-radius:20px;padding:26px;background:var(--green-050)}
+    .vision-aside .big{font:800 2.6rem var(--latin);color:var(--green-700);line-height:1}
+    .vision-aside p{margin:12px 0 0;color:var(--muted);font-size:.86rem}
+
+    /* ===== Services ===== */
+    .services-wrap{background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .services-head{display:flex;justify-content:space-between;align-items:flex-end;gap:34px;flex-wrap:wrap;margin-bottom:clamp(34px,4vw,54px)}
+    .services-head p{max-width:420px;color:var(--muted);font-size:.92rem;margin:0}
+    .services{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .service{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;transition:transform .3s var(--ease),box-shadow .3s,border-color .3s;position:relative;overflow:hidden}
+    .service:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);border-color:var(--green-100)}
+    .service .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .service .ico{width:52px;height:52px;border-radius:15px;background:var(--green-100);color:var(--green-700);display:grid;place-items:center;transition:.35s}
+    .service:hover .ico{background:var(--green-700);color:#fff}
+    .service .ico svg{width:26px;height:26px}
+    .service .no{font:700 .72rem var(--latin);letter-spacing:.14em;color:var(--line-2)}
+    .service:hover .no{color:var(--maroon)}
+    .service h3{font-size:1.16rem;margin:0 0 10px;font-weight:700;line-height:1.5}
+    body[data-lang="en"] .service h3{line-height:1.25}
+    .service p{font-size:.82rem;color:var(--muted);margin:0;line-height:1.7}
+
+    /* ===== Distribution matrix ===== */
+    .dist-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,5vw,70px);align-items:center}
+    .dist-visual{position:relative;border-radius:26px;overflow:hidden;min-height:440px;box-shadow:var(--shadow-md)}
+    .dist-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .dist-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,54,36,.1),rgba(9,54,36,.72))}
+    .dist-visual .cap{position:absolute;z-index:2;bottom:22px;inset-inline-start:22px;color:#fff}
+    .dist-visual .cap b{display:block;font:700 .64rem var(--latin);letter-spacing:.16em;color:#8ff0bb}
+    .dist-visual .cap span{font-size:1.05rem;font-weight:600}
+    .steps{display:flex;flex-direction:column;gap:12px}
+    .step{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start;padding:20px;border:1px solid var(--line);border-radius:18px;background:#fff;cursor:pointer;transition:.3s var(--ease)}
+    .step:hover,.step.active{border-color:var(--green-500);box-shadow:var(--shadow-sm);background:var(--green-050)}
+    .step .n{width:52px;height:52px;border-radius:14px;background:var(--green-100);color:var(--green-700);display:grid;place-items:center;font:800 1.15rem var(--latin);transition:.3s}
+    .step:hover .n,.step.active .n{background:var(--green-700);color:#fff}
+    .step h3{margin:0 0 5px;font-size:1.02rem}
+    .step p{margin:0;font-size:.8rem;color:var(--muted)}
+
+    /* ===== Contact CTA ===== */
+    .contact{background:linear-gradient(135deg,var(--green-600),var(--green-700));border-radius:clamp(24px,3vw,38px);color:#fff;padding:clamp(38px,5vw,72px);display:flex;align-items:center;justify-content:space-between;gap:34px;flex-wrap:wrap;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+    .contact::before{content:"";position:absolute;inset:0;background:radial-gradient(40% 70% at 90% 10%,rgba(255,255,255,.14),transparent 60%);pointer-events:none}
+    .contact-text{position:relative;z-index:1;max-width:620px}
+    .contact-text .eyebrow{color:#c9f2db}
+    .contact-text .eyebrow::before{background:#8ff0bb}
+    .contact-text h2{font-size:clamp(1.8rem,3.6vw,2.9rem);line-height:1.28;margin:0;font-weight:700}
+    body:not([data-lang="en"]) .contact-text h2{line-height:1.45}
+    .contact-text p{color:rgba(255,255,255,.82);margin:16px 0 0;font-size:.92rem}
+    .contact .btn{position:relative;z-index:1}
+
+    /* ===== Footer ===== */
+    footer{background:#0b1f17;color:#fff;padding:clamp(56px,7vw,96px) 0 30px;margin-top:clamp(56px,7vw,96px)}
+    .footer-top{display:grid;grid-template-columns:1.5fr .8fr .8fr;gap:clamp(30px,6vw,90px);padding-bottom:52px;border-bottom:1px solid rgba(255,255,255,.1)}
+    .footer-brand img{width:min(280px,72vw);filter:brightness(0) invert(1);margin-bottom:22px}
+    .footer-brand p{max-width:420px;color:rgba(255,255,255,.5);font-size:.82rem;margin:0}
+    .footer-col h3{font:700 .64rem var(--latin);letter-spacing:.16em;text-transform:uppercase;color:#8ff0bb;margin:0 0 20px}
+    .footer-col a{display:block;text-decoration:none;color:rgba(255,255,255,.6);font-size:.82rem;margin:0 0 12px;transition:.25s;width:fit-content}
+    .footer-col a:hover{color:#fff}
+    .footer-bottom{padding-top:26px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:rgba(255,255,255,.42);font:500 .62rem var(--latin);letter-spacing:.08em}
+
+    /* ===== Complete company story ===== */
+    .home-story{padding:clamp(76px,9vw,138px) 0;background:#fff}
+    .story-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);gap:clamp(42px,7vw,112px);align-items:center}
+    .story-media{position:relative;min-height:clamp(420px,52vw,680px);border-radius:clamp(24px,3vw,38px);overflow:hidden;box-shadow:var(--shadow-lg)}
+    .story-media img{position:absolute;inset:-24px 0;width:100%;height:calc(100% + 48px);object-fit:cover;transform:translateY(var(--story-shift,0)) scale(1.035);transition:transform .8s var(--ease)}
+    .story-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(7,37,24,.66))}
+    .story-stamp{position:absolute;z-index:2;inset:auto 24px 24px;display:flex;justify-content:space-between;align-items:end;color:#fff;gap:20px}
+    .story-stamp strong{font:800 clamp(2.1rem,5vw,4rem)/1 var(--latin)}.story-stamp span{max-width:190px;font-size:.76rem;color:rgba(255,255,255,.72)}
+    .story-copy h2{max-width:760px}.story-copy>p{max-width:62ch;color:var(--muted);font-size:clamp(.9rem,1.15vw,1.03rem);line-height:1.95;margin:22px 0}
+    .home-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:30px 0}
+    .home-kpis div{padding:18px;border:1px solid var(--line);border-radius:17px;background:var(--green-050)}.home-kpis strong{display:block;font:800 1.5rem/1 var(--latin);color:var(--green-700)}.home-kpis span{display:block;margin-top:7px;font-size:.72rem;color:var(--muted)}
+    .proof-section{padding:clamp(80px,10vw,150px) 0;background:#081f15;color:#fff;position:relative;overflow:hidden}.proof-section::before{content:"";position:absolute;width:min(64vw,860px);aspect-ratio:1;border:1px solid rgba(143,240,187,.12);border-radius:50%;inset:-58% auto auto -18%}
+    .proof-head{position:relative;display:grid;grid-template-columns:1.1fr .75fr;gap:50px;align-items:end;margin-bottom:clamp(38px,6vw,72px)}.proof-head .eyebrow{color:#8ff0bb}.proof-head h2{color:#fff}.proof-head p{color:rgba(255,255,255,.62);font-size:.92rem;line-height:1.9;margin:0}
+    .proof-grid{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.proof-image{min-height:500px;border-radius:28px;overflow:hidden;position:relative}.proof-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}.proof-image:hover img{transform:scale(1.045)}
+    .proof-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.proof-card{min-height:220px;padding:28px;border-radius:23px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(8px);display:flex;flex-direction:column;justify-content:space-between}.proof-card strong{font:800 clamp(1.8rem,3vw,3rem)/1 var(--latin);color:#8ff0bb}.proof-card b{font-size:1rem}.proof-card p{margin:8px 0 0;color:rgba(255,255,255,.6);font-size:.76rem;line-height:1.75}
+    .home-partners{padding:clamp(76px,9vw,130px) 0;background:#f5faf6}.partner-heading{display:flex;justify-content:space-between;align-items:end;gap:32px;margin-bottom:40px}.partner-heading p{max-width:480px;color:var(--muted);font-size:.88rem;margin:0}.partner-wall{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.partner-tile{min-height:140px;border:1px solid var(--line);border-radius:20px;background:#fff;display:grid;place-items:center;padding:22px;transition:.3s var(--ease);text-decoration:none}.partner-tile:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);border-color:transparent}.partner-tile img{max-width:145px;max-height:62px;object-fit:contain;filter:saturate(.75);transition:.3s}.partner-tile:hover img{filter:none}.partner-name{font:800 clamp(1.05rem,1.6vw,1.4rem)/1.1 var(--latin);color:var(--green-700);letter-spacing:-.01em;text-align:center}
+    body:not([data-lang="en"]) .en{display:none!important}
+
+    /* ===== Reveal ===== */
+    .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+    .reveal.in{opacity:1;transform:none}
+
+    /* ===== Mobile menu ===== */
+    .mobile-menu{position:fixed;inset:0;z-index:90;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:22px;opacity:0;visibility:hidden;transition:.35s}
+    .mobile-menu.open{opacity:1;visibility:visible}
+    .mobile-menu{justify-content:flex-start;align-items:stretch;gap:7px;padding:82px clamp(24px,8vw,70px) 38px;overflow-y:auto}
+    .mobile-menu a{text-decoration:none;font-size:clamp(1.3rem,6vw,1.9rem);font-weight:700;color:var(--ink)}
+    .mobile-menu a:hover{color:var(--green-700)}
+    .mobile-section-label{margin-top:8px;color:var(--green-600);font-size:.68rem;font-weight:700;letter-spacing:.08em}.mobile-sublink{font-size:.88rem!important;padding:4px 14px;border-inline-start:2px solid var(--green-100)}
+    .mobile-close{position:absolute;top:20px;inset-inline-end:20px;width:46px;height:46px;border:1px solid var(--line-2);border-radius:12px;background:#fff;font-size:1.4rem;cursor:pointer;color:var(--ink)}
+
+    /* ===== Responsive ===== */
+    @media(max-width:1080px){
+      .hero-card{grid-template-columns:1fr 1fr}
+      .hc-right{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;border-inline-start:0;border-top:1px solid rgba(255,255,255,.14)}
+      .hc-feats{flex:1 1 300px}
+      .featured{flex:1 1 260px;margin-top:0}
+    }
+    @media(max-width:900px){
+      .nav{opacity:1;transform:none;pointer-events:auto}.nav-links{display:none}.menu-btn{display:block;touch-action:manipulation}
+      .vision-grid{grid-template-columns:1fr}
+      .dist-grid{grid-template-columns:1fr}.dist-visual{min-height:320px;order:-1}
+      .services{grid-template-columns:repeat(2,1fr)}
+      .stats{grid-template-columns:repeat(2,1fr);gap:26px}
+      .stat:nth-child(3){border-inline-start:0;padding-inline-start:0}
+      .footer-top{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}
+      .story-grid,.proof-head,.proof-grid{grid-template-columns:1fr}.proof-image{min-height:420px}.partner-wall{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media(max-width:900px){
+      .scene-split{grid-template-columns:1fr;gap:18px;align-content:start}.scene-split p{max-width:56ch}
+    }
+    @media(max-width:680px){
+      .hero-card{grid-template-columns:1fr}
+      .hc-media{min-height:280px;order:-1}
+      .hc-right{flex-direction:column}
+      .services{grid-template-columns:1fr}
+      .home-story,.proof-section,.home-partners{padding-block:68px}.story-media{min-height:420px;order:-1}.home-kpis,.proof-cards{grid-template-columns:1fr}.proof-image{min-height:330px}.partner-heading{display:block}.partner-heading p{margin-top:16px}.partner-wall{grid-template-columns:repeat(2,minmax(0,1fr))}.partner-tile{min-height:112px;padding:16px}.story-stamp{gap:12px}.story-stamp span{max-width:150px;font-size:.7rem}
+      .contact{flex-direction:column;align-items:flex-start}
+      .nav-cta .ar,.nav-cta .en{font-size:.74rem}
+      .intro{height:360vh}.story-scene{inset:8px;border-radius:14px}
+      .scene-content{padding:104px 22px 78px}
+      .scene-center h1{font-size:2.25rem}.scene-center p{max-width:32ch}
+      .scene-split h2{font-size:2.2rem}.scene-final h2{font-size:2.15rem}
+      .fact-grid>div{min-height:112px;padding:18px}.fact-grid strong{font-size:1.5rem}
+      .corner-name{display:none}.corner-brand iframe{width:124px;height:48px}
+      .scene-switcher{inset-inline-start:18px;bottom:20px}
+      .cine-progress{display:none}
+      .mobile-menu{pointer-events:none;padding:max(82px,calc(env(safe-area-inset-top) + 70px)) 22px max(32px,env(safe-area-inset-bottom));overscroll-behavior:contain;touch-action:pan-y}.mobile-menu.open{pointer-events:auto}.mobile-close{touch-action:manipulation}
+    }
+    @media(max-width:420px){
+      .stats{grid-template-columns:1fr 1fr;gap:20px}
+      .hero-title{font-size:2rem}
+      .nav-inner{padding-inline:12px;gap:7px}.nav-actions{gap:6px}.nav-logo img{width:96px}.nav-cta{display:none}.menu-btn{width:42px;height:42px}.lang{width:38px;height:38px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}.reveal{opacity:1;transform:none}
+      .intro{height:100vh}.story-scene{opacity:0}.story-scene:first-child{opacity:1}
+      .cine-guide,.cine-progress{display:none}.nav{opacity:1;transform:none;pointer-events:auto}
+    }
+  /* >>> polish */
+    /* ===================== visual polish (CSS only) ===================== */
+    :root{--polish-sh:0 1px 2px rgba(12,48,32,.04),0 14px 34px -14px rgba(12,48,32,.18);--polish-sh-lg:0 2px 4px rgba(12,48,32,.04),0 30px 60px -24px rgba(12,48,32,.30)}
+    h1,h2,h3,.sec-title,.hero-title,.stats-title{text-wrap:balance}
+    p{text-wrap:pretty}
+    ::-webkit-scrollbar{width:11px;height:11px}
+    ::-webkit-scrollbar-track{background:var(--bg-soft)}
+    ::-webkit-scrollbar-thumb{background:linear-gradient(var(--green-600),var(--green-700));border-radius:20px;border:3px solid var(--bg-soft)}
+    /* headings */
+    .stats-title{max-width:32ch}
+    .sec-title .hl{background:linear-gradient(90deg,var(--green-700),var(--green-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .services-head p{border-inline-start:2px solid var(--green-100);padding-inline-start:18px;line-height:1.85}
+    /* buttons: shine sweep */
+    .btn{position:relative;overflow:hidden;isolation:isolate}
+    .btn::after{content:"";position:absolute;z-index:-1;top:-20%;bottom:-20%;width:38%;left:-60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);pointer-events:none}
+    .btn:hover::after{animation:polishShine .9s var(--ease)}
+    @keyframes polishShine{to{left:130%}}
+    .btn-brand{background:linear-gradient(135deg,var(--green-600),var(--green-700))}
+    /* service cards: layered shadow, gradient hairline, icon glow */
+    .service{box-shadow:var(--polish-sh)}
+    .service::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--green-500),var(--green-700));transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+    body[dir="rtl"] .service::before,html[dir="rtl"] .service::before{transform-origin:right}
+    .service:hover::before{transform:scaleX(1)}
+    .service:hover{box-shadow:var(--polish-sh-lg)}
+    .service:hover .ico{box-shadow:0 10px 24px -8px rgba(18,105,63,.55);transform:rotate(-6deg)}
+    /* KPI tiles & vision card */
+    .home-kpis div{background:linear-gradient(160deg,#fff,var(--green-050));box-shadow:var(--polish-sh);transition:transform .35s var(--ease),box-shadow .35s}
+    .home-kpis div:hover{transform:translateY(-3px);box-shadow:var(--polish-sh-lg)}
+    .vision-aside{background:linear-gradient(160deg,var(--green-050),#fff);box-shadow:var(--polish-sh)}
+    .vision-aside .big{background:linear-gradient(90deg,var(--green-700),var(--green-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    /* quality proof cards on dark */
+    .proof-card{transition:transform .4s var(--ease),background .4s,border-color .4s}
+    .proof-card:hover{transform:translateY(-5px);background:rgba(255,255,255,.11);border-color:rgba(143,240,187,.35)}
+    /* partners: calm grey logos that wake up on hover */
+    .partner-tile{box-shadow:var(--polish-sh)}
+    .partner-tile img{filter:grayscale(1) contrast(.95);opacity:.75}
+    .partner-tile:hover img{filter:none;opacity:1;transform:scale(1.05)}
+    /* network steps */
+    .step{box-shadow:var(--polish-sh)}
+    .step:hover,.step.active{box-shadow:var(--polish-sh-lg)}
+    @media(prefers-reduced-motion:reduce){.btn:hover::after{animation:none}.service::before{transition:none}}
+/* <<< polish */
+  </style>
+  <?php $homeStyles = ''; try { $homeStyles = element_styles_css('home'); } catch (Throwable) {} if ($homeStyles !== ''): ?><style><?= $homeStyles ?></style><?php endif; ?>
+</head>
+<body data-lang="<?= h($locale) ?>" data-page-scope="home" data-customization-api="<?= h(site_url('api/customizations.php')) ?>">
+
+  <nav class="nav" id="nav" aria-label="التنقل الرئيسي">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#top" aria-label="مكتب الحياة العلمي">
+        <img src="assets/logo.png" alt="مكتب الحياة العلمي — Al Hayat Scientific Office">
+      </a>
+      <div class="nav-links">
+        <a href="#top"><span class="ar">الرئيسية</span><span class="en">Home</span></a>
+        <div class="nav-group"><a href="about.php?lang=ar" data-bilingual-link="about.php"><span class="ar">من نحن</span><span class="en">About</span> <small>⌄</small></a><div class="nav-dropdown"><a href="about.php?lang=ar#story"><span class="ar">قصة الحياة</span><span class="en">Our story</span></a><a href="about.php?lang=ar#who"><span class="ar">من نحن</span><span class="en">Who we are</span></a><a href="about.php?lang=ar#scale"><span class="ar">قدراتنا اليوم</span><span class="en">Our scale</span></a><a href="about.php?lang=ar#leadership"><span class="ar">القيادة</span><span class="en">Leadership</span></a><a href="about.php?lang=ar#milestones"><span class="ar">محطاتنا</span><span class="en">Milestones</span></a><a href="about.php?lang=ar#team"><span class="ar">فريقنا</span><span class="en">Our team</span></a></div></div>
+        <div class="nav-group"><a href="#services"><span class="ar">خدماتنا</span><span class="en">Services</span> <small>⌄</small></a><div class="nav-dropdown nav-dropdown-wide"><a href="services.php?lang=ar#regulatory-affairs"><span class="ar">التسجيل الدوائي</span><span class="en">Registration</span></a><a href="services.php?lang=ar#warehousing"><span class="ar">المخازن والتبريد</span><span class="en">Warehousing</span></a><a href="services.php?lang=ar#distribution"><span class="ar">التوزيع الوطني</span><span class="en">Distribution</span></a><a href="services.php?lang=ar#customer-relations"><span class="ar">علاقات العملاء</span><span class="en">Customer relations</span></a><a href="services.php?lang=ar#pharmacovigilance"><span class="ar">اليقظة الدوائية</span><span class="en">Pharmacovigilance</span></a><a href="services.php?lang=ar#compliance"><span class="ar">الامتثال والجودة</span><span class="en">Compliance</span></a></div></div>
+        <a href="partners.php?lang=ar" data-bilingual-link="partners.php"><span class="ar">الشركاء</span><span class="en">Partners</span></a>
+        <a href="quality.php?lang=ar" data-bilingual-link="quality.php"><span class="ar">الجودة</span><span class="en">Quality</span></a>
+        <a href="blog.php?lang=ar" data-bilingual-link="blog.php"><span class="ar">الأخبار</span><span class="en">News</span></a>
+        <a href="messages.php?lang=ar" data-bilingual-link="messages.php"><span class="ar">تواصل</span><span class="en">Speak Up</span></a>
+      </div>
+      <div class="nav-actions">
+        <?php if ($languageSwitching): ?><button class="lang" id="lang" type="button" aria-label="تغيير اللغة"><span class="ar">EN</span><span class="en">ع</span></button><?php endif; ?>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="القائمة" aria-expanded="false" aria-controls="mobileMenu"></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <button class="mobile-close" id="mobileClose" type="button" aria-label="إغلاق">✕</button>
+    <a href="#top" class="mobile-link"><span class="ar">الرئيسية</span><span class="en">Home</span></a>
+    <span class="mobile-section-label"><span class="ar">من نحن</span><span class="en">About</span></span><a href="about.php?lang=ar#story" class="mobile-sublink"><span class="ar">قصة الحياة</span><span class="en">Our story</span></a><a href="about.php?lang=ar#who" class="mobile-sublink"><span class="ar">من نحن</span><span class="en">Who we are</span></a><a href="about.php?lang=ar#scale" class="mobile-sublink"><span class="ar">قدراتنا اليوم</span><span class="en">Our scale</span></a><a href="about.php?lang=ar#leadership" class="mobile-sublink"><span class="ar">القيادة</span><span class="en">Leadership</span></a><a href="about.php?lang=ar#milestones" class="mobile-sublink"><span class="ar">محطاتنا</span><span class="en">Milestones</span></a><a href="about.php?lang=ar#team" class="mobile-sublink"><span class="ar">فريقنا</span><span class="en">Our team</span></a>
+    <span class="mobile-section-label"><span class="ar">الخدمات</span><span class="en">Services</span></span><a href="services.php?lang=ar#regulatory-affairs" class="mobile-sublink"><span class="ar">التسجيل الدوائي</span><span class="en">Registration</span></a><a href="services.php?lang=ar#warehousing" class="mobile-sublink"><span class="ar">المخازن والتبريد</span><span class="en">Warehousing</span></a><a href="services.php?lang=ar#distribution" class="mobile-sublink"><span class="ar">التوزيع الوطني</span><span class="en">Distribution</span></a><a href="services.php?lang=ar#pharmacovigilance" class="mobile-sublink"><span class="ar">اليقظة الدوائية</span><span class="en">Pharmacovigilance</span></a><a href="#services" class="mobile-sublink"><span class="ar">كل الخدمات</span><span class="en">All services</span></a>
+    <a href="partners.php?lang=ar" data-bilingual-link="partners.php" class="mobile-link"><span class="ar">الشركاء</span><span class="en">Partners</span></a>
+    <a href="quality.php?lang=ar" data-bilingual-link="quality.php" class="mobile-link"><span class="ar">الجودة</span><span class="en">Quality</span></a>
+    <a href="blog.php?lang=ar" data-bilingual-link="blog.php" class="mobile-link"><span class="ar">الأخبار</span><span class="en">News</span></a>
+    <a href="messages.php?lang=ar" data-bilingual-link="messages.php" class="mobile-link"><span class="ar">تواصل معنا</span><span class="en">Speak Up</span></a>
+  </div>
+
+  <span id="top"></span>
+
+  <!-- ===== CINEMATIC SCROLL INTRO ===== -->
+  <header class="intro" id="intro">
+    <div class="story-stage" id="storyStage">
+      <div class="story-scene" data-scene="0">
+        <canvas class="frame-canvas" id="scene0Canvas" data-source="<?= h(lc_media('intro_video')) ?>" aria-hidden="true"></canvas>
+        <div class="scene-content scene-center">
+          <div class="scene-logo-wrap"><iframe class="scene-logo" src="assets/animated-logo.html" title="الشعار المتحرك لمكتب الحياة العلمي" scrolling="no" loading="eager" aria-hidden="true"></iframe></div>
+          <div class="scene-eyebrow"><span class="ar"><?= h(lc('scene0_eyebrow','ar')) ?></span><span class="en"><?= h(lc('scene0_eyebrow','en')) ?></span></div>
+          <h1><span class="ar"><?= h(lc('scene0_title','ar')) ?></span><span class="en block"><?= h(lc('scene0_title','en')) ?></span></h1>
+        </div>
+      </div>
+      <div class="story-scene" data-scene="1">
+        <canvas class="frame-canvas" id="scene1Canvas" data-source="<?= h(lc_media('dark_video')) ?>" aria-hidden="true"></canvas>
+        <div class="scene-content scene-split">
+          <h2><span class="ar"><?= h(lc('scene1_title','ar')) ?></span><span class="en block"><?= h(lc('scene1_title','en')) ?></span></h2>
+          <p><span class="ar"><?= h(lc('scene1_body','ar')) ?></span><span class="en block"><?= h(lc('scene1_body','en')) ?></span></p>
+        </div>
+      </div>
+      <div class="story-scene" data-scene="2">
+        <canvas class="frame-canvas" id="scene2Canvas" data-source="<?= h(lc_media('intro_video')) ?>" aria-hidden="true"></canvas>
+        <div class="scene-content scene-facts">
+          <div class="scene-title"><span class="ar"><?= h(lc('stats_title','ar')) ?></span><span class="en"><?= h(lc('stats_title','en')) ?></span></div>
+          <div class="fact-grid">
+            <div><strong>30<i>+</i></strong><span class="ar"><?= h(lc('stat1_label','ar')) ?></span><span class="en"><?= h(lc('stat1_label','en')) ?></span></div>
+            <div><strong>18</strong><span class="ar"><?= h(lc('stat2_label','ar')) ?></span><span class="en"><?= h(lc('stat2_label','en')) ?></span></div>
+            <div><strong>24<i>/7</i></strong><span class="ar"><?= h(lc('stat3_label','ar')) ?></span><span class="en"><?= h(lc('stat3_label','en')) ?></span></div>
+            <div><strong>GDP</strong><span class="ar"><?= h(lc('stat4_label','ar')) ?></span><span class="en"><?= h(lc('stat4_label','en')) ?></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="story-scene" data-scene="3">
+        <canvas class="frame-canvas" id="scene3Canvas" data-source="<?= h(lc_media('dark_video')) ?>" aria-hidden="true"></canvas>
+        <div class="scene-content scene-final">
+          <div class="scene-eyebrow"><span class="ar"><?= h(lc('scene3_eyebrow','ar')) ?></span><span class="en"><?= h(lc('scene3_eyebrow','en')) ?></span></div>
+          <h2><span class="ar"><?= h(lc('scene3_title','ar')) ?></span><span class="en block"><?= h(lc('scene3_title','en')) ?></span></h2>
+          <div class="scene-actions">
+            <a class="btn btn-cine-primary" href="#services"><span class="ar">الخدمات</span><span class="en">Services</span></a>
+            <a class="btn btn-cine-ghost" href="#contact"><span class="ar">تواصل معنا</span><span class="en">Contact us</span></a>
+          </div>
+        </div>
+      </div>
+
+      <video class="stage-leaves" src="assets/leaves.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+      <a class="corner-brand" id="cornerBrand" href="#top" aria-label="مكتب الحياة العلمي">
+        <img src="assets/logo.png" alt="مكتب الحياة العلمي">
+      </a>
+      <div class="scene-switcher" aria-label="مشاهد المقدمة">
+        <button class="active" data-go-scene="0" type="button">01</button>
+        <button data-go-scene="1" type="button">02</button>
+        <button data-go-scene="2" type="button">03</button>
+        <button data-go-scene="3" type="button">04</button>
+      </div>
+      <div class="cine-guide" id="cineGuide"><span class="ar">حرّك بالسكرول أو الماوس</span><span class="en">Scroll or move the mouse</span><div class="cine-track" aria-hidden="true"></div></div>
+      <div class="cine-progress" aria-hidden="true"><b id="cineProgressText">01</b><span id="cineProgressBar"></span></div>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-head reveal">
+        <h1 class="hero-title">
+          <span class="ar"><?= h(lc('hero_title','ar')) ?> <span class="spark">✦</span></span>
+          <span class="en block"><?= h(lc('hero_title','en')) ?> <span class="spark">✦</span></span>
+        </h1>
+        <p class="hero-sub">
+          <span class="ar"><?= h(lc('hero_sub','ar')) ?></span>
+          <span class="en block"><?= h(lc('hero_sub','en')) ?></span>
+        </p>
+      </div>
+
+      <div class="hero-card reveal">
+        <!-- LEFT -->
+        <div class="hc-col hc-left">
+          <div class="hc-kicker"><span class="ar">منظومة متكاملة</span><span class="en">Integrated system</span></div>
+          <h2 class="hc-title">
+            <span class="ar"><?= h(lc('hero_card_title','ar')) ?></span>
+            <span class="en block"><?= h(lc('hero_card_title','en')) ?></span>
+          </h2>
+          <p class="hc-copy">
+            <span class="ar"><?= h(lc('hero_card_copy','ar')) ?></span>
+            <span class="en block"><?= h(lc('hero_card_copy','en')) ?></span>
+          </p>
+          <div class="hc-cta">
+            <a class="btn btn-light" href="#services"><span class="ar">اكتشف خدماتنا</span><span class="en">Explore services</span><span class="arrow">↗</span></a>
+            <div class="hc-proof">
+              <span class="num">30+</span>
+              <small><span class="ar">عاماً من الثقة في السوق العراقي</span><span class="en">years trusted in Iraq</span></small>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER MEDIA -->
+        <div class="hc-col hc-media">
+          <img class="kenburns" src="<?= h(lc_media('hero_image')) ?>" alt="مبنى مكتب الحياة العلمي — بغداد">
+          <video class="leaf-veil" src="assets/leaves.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+          <div class="hc-badge"><i></i><span>BAGHDAD · IRAQ</span></div>
+        </div>
+
+        <!-- RIGHT FEATURES -->
+        <div class="hc-col hc-right">
+          <div class="hc-feats">
+            <div class="feat">
+              <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/></svg></div>
+              <div><b><span class="ar">التسجيل الدوائي</span><span class="en">Registration</span></b><span class="ar">ملفات وموافقات منظّمة</span><span class="en">Regulated dossiers</span></div>
+            </div>
+            <div class="feat">
+              <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M12 6l4-3M12 6L8 3M12 12l5-3M12 12l-5-3M12 18l4-2.5M12 18l-4-2.5"/></svg></div>
+              <div><b><span class="ar">سلسلة التبريد</span><span class="en">Cold chain</span></b><span class="ar">تخزين مراقب الحرارة</span><span class="en">Temp-controlled</span></div>
+            </div>
+            <div class="feat">
+              <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.5 6 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-6-3.5-9S9.5 5.5 12 3z"/></svg></div>
+              <div><b><span class="ar">تغطية وطنية</span><span class="en">Nationwide</span></b><span class="ar">18 محافظة</span><span class="en">18 governorates</span></div>
+            </div>
+          </div>
+          <div class="featured">
+            <span class="tag"><span class="ar">خدمة مميّزة</span><span class="en">Featured</span></span>
+            <h4><span class="ar">اليقظة الدوائية</span><span class="en">Pharmacovigilance</span></h4>
+            <p><span class="ar">مراقبة سلامة مستمرة تحمي المريض بعد وصول الدواء.</span><span class="en">Continuous safety monitoring beyond delivery.</span></p>
+            <div class="row">
+              <b style="font:800 .82rem var(--latin);color:var(--green-700)">GDP · GSP</b>
+              <a class="go" href="#services" aria-label="المزيد">↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== TRUST STRIP ===== -->
+  <div class="trust">
+    <div class="trust-inner">
+      <span><span class="ar">معايير عالمية نلتزم بها</span><span class="en">Global standards we uphold</span></span>
+      <div class="trust-badges">
+        <b>GDP</b><b>GSP</b><b>ISO 9001</b>
+        <b><span class="ar">وزارة الصحة</span><span class="en">Ministry of Health</span></b>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- ===== STATS ===== -->
+    <section class="block" style="padding-bottom:0">
+      <div class="wrap">
+        <h2 class="stats-title reveal"><span class="ar"><?= h(lc('stats_title','ar')) ?></span><span class="en block"><?= h(lc('stats_title','en')) ?></span></h2>
+        <div class="stats reveal" aria-label="أرقام">
+          <div class="stat"><strong>30<i>+</i></strong><small><span class="ar"><?= h(lc('stat1_label','ar')) ?></span><span class="en"><?= h(lc('stat1_label','en')) ?></span></small></div>
+          <div class="stat"><strong>18</strong><small><span class="ar"><?= h(lc('stat2_label','ar')) ?></span><span class="en"><?= h(lc('stat2_label','en')) ?></span></small></div>
+          <div class="stat"><strong>24<i>/7</i></strong><small><span class="ar"><?= h(lc('stat3_label','ar')) ?></span><span class="en"><?= h(lc('stat3_label','en')) ?></span></small></div>
+          <div class="stat"><strong>GDP</strong><small><span class="ar"><?= h(lc('stat4_label','ar')) ?></span><span class="en"><?= h(lc('stat4_label','en')) ?></span></small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== COMPLETE COMPANY STORY ===== -->
+    <section class="home-story" id="story-preview">
+      <div class="wrap">
+        <div class="story-grid">
+          <figure class="story-media reveal">
+            <img src="<?= h(lc_media('story_image')) ?>" alt="المقر الرئيسي لمكتب الحياة العلمي في بغداد">
+            <figcaption class="story-stamp">
+              <strong>1996</strong>
+              <span><span class="ar">من بغداد بدأت قصة ثقة تمتد اليوم إلى كل العراق.</span><span class="en block">A story of trust that began in Baghdad and now reaches all of Iraq.</span></span>
+            </figcaption>
+          </figure>
+          <div class="story-copy reveal">
+            <div class="eyebrow"><span class="ar">قصة الحياة</span><span class="en">Our story</span></div>
+            <h2 class="sec-title"><span class="ar">خبرة محلية عميقة، <span class="hl">بمعايير عالمية.</span></span><span class="en block">Deep local expertise, <span class="hl">global standards.</span></span></h2>
+            <p><span class="ar">منذ عام 1996، يعمل مكتب الحياة العلمي شريكاً متكاملاً للشركات الدوائية في العراق. نجمع التسجيل والتنظيم والخزن المراقب والتوزيع واليقظة الدوائية ضمن منظومة واحدة يقودها فريق يعرف السوق واحتياجات المريض.</span><span class="en block">Since 1996, Al Hayat Scientific Office has served as an integrated partner for pharmaceutical companies in Iraq, combining regulatory affairs, monitored storage, distribution and pharmacovigilance in one locally experienced system.</span></p>
+            <div class="home-kpis">
+              <div><strong>525+</strong><span><span class="ar">متخصصاً ضمن فريق الحياة</span><span class="en">Specialists across Al Hayat</span></span></div>
+              <div><strong>3</strong><span><span class="ar">مراكز رئيسية: بغداد وأربيل والبصرة</span><span class="en">Main hubs: Baghdad, Erbil and Basra</span></span></div>
+              <div><strong>13</strong><span><span class="ar">قسماً يعمل كنظام موحّد</span><span class="en">Departments working as one system</span></span></div>
+              <div><strong>30+</strong><span><span class="ar">عاماً من الخبرة في السوق العراقي</span><span class="en">Years of Iraqi market experience</span></span></div>
+            </div>
+            <a class="btn btn-brand" href="about.php?lang=ar#story" data-bilingual-link="about.php#story"><span class="ar">اقرأ قصة الحياة</span><span class="en">Discover our story</span><span class="arrow">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VISION ===== -->
+    <section class="block" id="vision">
+      <div class="wrap vision-grid">
+        <div class="reveal">
+          <h2 class="sec-title"><span class="ar">شريك واحد <span class="hl">لكل المراحل.</span></span><span class="en block">One partner for <span class="hl">every stage.</span></span></h2>
+          <p class="vision-lead" style="margin-top:22px"><span class="ar">التسجيل والتخزين والتوزيع تحت سقف واحد، مع أنظمة جودة مدققة وشبكة تغطية وطنية — لأن المريض في نهاية كل خطوة.</span><span class="en block">Registration, storage, and distribution under one roof, backed by audited quality systems and nationwide reach — because the patient is at the end of every step.</span></p>
+        </div>
+        <div class="vision-aside reveal">
+          <div class="big">06</div>
+          <p><span class="ar">خدمات متكاملة تعمل كنظام واحد، من الموافقة التنظيمية حتى التسليم الموثّق.</span><span class="en block">Six integrated services working as one system, from regulatory approval to documented handover.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section class="services-wrap">
+      <div class="block" id="services">
+        <div class="wrap">
+          <div class="services-head reveal">
+            <div>
+              <div class="eyebrow"><span class="ar">خدماتنا</span><span class="en">Our services</span></div>
+              <h2 class="sec-title"><span class="ar">منظومة دوائية <span class="hl">متكاملة.</span></span><span class="en block">A complete <span class="hl">pharma system.</span></span></h2>
+            </div>
+            <p><span class="ar">خبرة تنظيمية ولوجستية وتجارية تعمل كنظام واحد، لتصل منتجات شركائنا إلى السوق العراقي بثقة.</span><span class="en block">Regulatory, logistics, and commercial expertise working as one system to bring partner products to Iraq with confidence.</span></p>
+          </div>
+          <div class="services">
+            <article class="service reveal">
+              <div class="top"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13l2 2 4-4"/></svg></div><span class="no">01</span></div>
+              <h3><span class="ar">التسجيل الدوائي</span><span class="en">Regulatory registration</span></h3>
+              <p><span class="ar">ملفات مكتملة ومسارات واضحة تواكب المتطلبات المحلية من التقديم حتى الموافقة.</span><span class="en block">Complete dossiers and clear pathways through every local requirement, from submission to approval.</span></p>
+            </article>
+            <article class="service reveal">
+              <div class="top"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/><path d="M12 7v3M10.5 8.5h3"/></svg></div><span class="no">02</span></div>
+              <h3><span class="ar">التخزين وسلسلة التبريد</span><span class="en">Warehousing & cold chain</span></h3>
+              <p><span class="ar">بيئات مراقبة ومؤرشفة تحفظ استقرار المنتج في كل لحظة.</span><span class="en block">Monitored, documented environments that preserve product integrity at every moment.</span></p>
+            </article>
+            <article class="service reveal">
+              <div class="top"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><span class="no">03</span></div>
+              <h3><span class="ar">التوزيع الوطني</span><span class="en">Nationwide distribution</span></h3>
+              <p><span class="ar">مسارات مدروسة تربط بغداد بالمستشفيات والصيدليات في أنحاء العراق.</span><span class="en block">Planned routes connecting Baghdad with hospitals and pharmacies throughout Iraq.</span></p>
+            </article>
+            <article class="service reveal">
+              <div class="top"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4-3.5 7.5-8 9-4.5-1.5-8-5-8-9V6z"/><path d="M12 8v4M12 15h.01"/></svg></div><span class="no">04</span></div>
+              <h3><span class="ar">اليقظة الدوائية</span><span class="en">Pharmacovigilance</span></h3>
+              <p><span class="ar">مراقبة سلامة مستمرة وإبلاغ مسؤول يحمي المريض بعد وصول الدواء.</span><span class="en block">Continuous safety monitoring and responsible reporting beyond delivery.</span></p>
+            </article>
+            <article class="service reveal">
+              <div class="top"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><span class="no">05</span></div>
+              <h3><span class="ar">الجودة والامتثال</span><span class="en">Quality & compliance</span></h3>
+              <p><span class="ar">أنظمة مدققة وإجراءات موثقة تحوّل المعايير إلى ممارسة يومية.</span><span class="en block">Audited systems and documented procedures that turn standards into daily practice.</span></p>
+            </article>
+            <article class="service reveal">
+              <div class="top"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="no">06</span></div>
+              <h3><span class="ar">علاقات الشركاء</span><span class="en">Partner relations</span></h3>
+              <p><span class="ar">فريق يسمع، يستجيب، ويبقي شركاءنا على اطلاع في كل نقطة اتصال.</span><span class="en block">A team that listens, responds, and keeps partners informed at every touchpoint.</span></p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== QUALITY IN PRACTICE ===== -->
+    <section class="proof-section" id="quality-proof">
+      <div class="wrap">
+        <div class="proof-head reveal">
+          <div>
+            <div class="eyebrow"><span class="ar">الجودة في كل خطوة</span><span class="en">Quality in every step</span></div>
+            <h2 class="sec-title"><span class="ar">من المخزن إلى المريض، <span class="hl">كل تفصيل موثّق.</span></span><span class="en block">From warehouse to patient, <span class="hl">every detail is documented.</span></span></h2>
+          </div>
+          <p><span class="ar">نطبّق إجراءات التشغيل القياسية ومراقبة الحرارة والتتبع المستمر، لتبقى سلامة المنتج جزءاً من العمل اليومي.</span><span class="en block">Standard operating procedures, temperature monitoring and continuous traceability make product integrity a daily practice.</span></p>
+        </div>
+        <div class="proof-grid">
+          <figure class="proof-image reveal"><img src="<?= h(lc_media('proof_image')) ?>" alt="فريق مكتب الحياة العلمي داخل المخزن الدوائي"></figure>
+          <div class="proof-cards">
+            <article class="proof-card reveal"><strong>99.7%</strong><div><b><span class="ar">مطابقة حرارية</span><span class="en">Temperature compliance</span></b><p><span class="ar">مراقبة مستمرة لسلامة المنتجات الحساسة.</span><span class="en">Continuous oversight for sensitive products.</span></p></div></article>
+            <article class="proof-card reveal"><strong>46+</strong><div><b><span class="ar">مركبة مبردة</span><span class="en">Cold-chain vehicles</span></b><p><span class="ar">تتبع GPS ومسارات توزيع موثقة.</span><span class="en">GPS tracking and documented routes.</span></p></div></article>
+            <article class="proof-card reveal"><strong>6</strong><div><b><span class="ar">مراكز توزيع</span><span class="en">Distribution centers</span></b><p><span class="ar">تغطية عملية تربط المناطق الحيوية.</span><span class="en">Operational coverage across key regions.</span></p></div></article>
+            <article class="proof-card reveal"><strong>7,000+</strong><div><b><span class="ar">نقطة رعاية صحية</span><span class="en">Healthcare points</span></b><p><span class="ar">صيدليات ومذاخر ومؤسسات صحية ضمن الشبكة.</span><span class="en">Pharmacies, drugstores and health institutions.</span></p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PARTNERS ===== -->
+    <section class="home-partners" id="partners-preview">
+      <div class="wrap">
+        <div class="partner-heading reveal">
+          <div>
+            <div class="eyebrow"><span class="ar">شركاؤنا</span><span class="en">Our partners</span></div>
+            <h2 class="sec-title"><span class="ar">علاقات تُبنى على <span class="hl">الثقة والنتائج.</span></span><span class="en block">Relationships built on <span class="hl">trust and results.</span></span></h2>
+          </div>
+          <p><span class="ar">نعمل مع شركات دوائية عالمية لنحوّل الخبرة الدولية إلى وصول مسؤول وفعّال داخل السوق العراقي.</span><span class="en block">We help global pharmaceutical companies turn international expertise into responsible, effective access across Iraq.</span></p>
+        </div>
+        <div class="partner-wall reveal" aria-label="شعارات الشركاء">
+          <?php foreach (content_data('partners') as $partner): $pname = (string) ($partner['name'] ?? ''); $plogo = $partner['logo'] ?? null; ?>
+          <a class="partner-tile" href="partners.php?lang=ar"><?php if ($plogo): ?><img src="<?= h($plogo) ?>" alt="<?= h($pname) ?>"><?php else: ?><span class="partner-name"><?= h($pname) ?></span><?php endif; ?></a>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DISTRIBUTION NETWORK ===== -->
+    <section class="block" id="network">
+      <div class="wrap">
+        <div class="services-head reveal" style="margin-bottom:clamp(30px,4vw,48px)">
+          <div>
+            <div class="eyebrow"><span class="ar">شبكة التوزيع</span><span class="en">Distribution network</span></div>
+            <h2 class="sec-title"><span class="ar"><?= h(lc('network_title','ar')) ?></span><span class="en block"><?= h(lc('network_title','en')) ?></span></h2>
+          </div>
+          <p><span class="ar">منظومة تتعقب كل خطوة وتحمي كل درجة حرارة وتوثق كل تسليم.</span><span class="en block">A network that tracks every step, safeguards every temperature, and documents every handover.</span></p>
+        </div>
+        <div class="dist-grid">
+          <div class="dist-visual reveal">
+            <img class="kenburns" src="<?= h(lc_media('network_image')) ?>" alt="شبكة مكتب الحياة العلمي">
+            <video class="leaf-veil" src="assets/leaves.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+            <div class="cap"><b>AL HAYAT · NETWORK</b><span><span class="ar">تغطية وطنية موثّقة</span><span class="en">Documented nationwide reach</span></span></div>
+          </div>
+          <div class="steps reveal">
+            <div class="step active" tabindex="0"><div class="n">01</div><div><h3><span class="ar">الانطلاق الموثّق</span><span class="en">Documented dispatch</span></h3><p><span class="ar">تحقق من المنتج والدفعة ودرجة الحرارة قبل المغادرة.</span><span class="en block">Product, batch, and temperature verified before departure.</span></p></div></div>
+            <div class="step" tabindex="0"><div class="n">02</div><div><h3><span class="ar">التتبع الحراري</span><span class="en">Temperature tracking</span></h3><p><span class="ar">مراقبة مستمرة أثناء النقل ضمن المسارات اليومية.</span><span class="en block">Continuous monitoring throughout daily routes.</span></p></div></div>
+            <div class="step" tabindex="0"><div class="n">03</div><div><h3><span class="ar">التغطية الوطنية</span><span class="en">Nationwide reach</span></h3><p><span class="ar">وصول إلى المستشفيات والصيدليات في أنحاء العراق.</span><span class="en block">Delivery to hospitals and pharmacies across Iraq.</span></p></div></div>
+            <div class="step" tabindex="0"><div class="n">04</div><div><h3><span class="ar">التسليم الموثّق</span><span class="en">Documented handover</span></h3><p><span class="ar">توثيق واضح في كل مرحلة من سلسلة العهدة.</span><span class="en block">Clear documentation at every stage of custody.</span></p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="block" id="contact" style="padding-top:0">
+      <div class="wrap">
+        <div class="contact reveal">
+          <div class="contact-text">
+            <div class="eyebrow"><span class="ar">تواصل معنا</span><span class="en">Contact us</span></div>
+            <h2><span class="ar"><?= h(lc('contact_title','ar')) ?></span><span class="en block"><?= h(lc('contact_title','en')) ?></span></h2>
+          </div>
+          <a class="btn btn-light" href="messages.php"><span class="ar">أرسِل رسالتك</span><span class="en">Send message</span><span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="مكتب الحياة العلمي">
+          <p><span class="ar">حي بابل، محلة 929، شارع 19، بناية مكتب الحياة العلمي — بغداد، العراق.</span><span class="en block">Hay Babel, District 929, St. 19, Al Hayat Scientific Office Building — Baghdad, Iraq.</span></p>
+        </div>
+        <div class="footer-col">
+          <h3><span class="ar">استكشف</span><span class="en">Explore</span></h3>
+          <a href="services.php?lang=ar#regulatory-affairs"><span class="ar">التسجيل</span><span class="en">Registration</span></a>
+          <a href="services.php?lang=ar#warehousing"><span class="ar">المخازن</span><span class="en">Warehouses</span></a>
+          <a href="services.php?lang=ar#distribution"><span class="ar">التوزيع</span><span class="en">Distribution</span></a>
+          <a href="quality.php"><span class="ar">الامتثال</span><span class="en">Compliance</span></a>
+        </div>
+        <div class="footer-col">
+          <h3><span class="ar">تواصل</span><span class="en">Connect</span></h3>
+          <a href="https://www.linkedin.com/company/alhayatso/">LinkedIn</a>
+          <a href="https://www.instagram.com/alhayat_scientific_office/">Instagram</a>
+          <a href="https://www.facebook.com/alhayatso/">Facebook</a>
+          <a href="blog.php"><span class="ar">الأخبار</span><span class="en">News</span></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 AL HAYAT SCIENTIFIC OFFICE</span>
+        <span><span class="ar">حيث المريض أولويتنا · بغداد، العراق</span><span class="en">Where the patient is our priority · Baghdad, Iraq</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <script nonce="<?= h(csp_nonce()) ?>">
+    (() => {
+      const clamp = (n, min = 0, max = 1) => Math.min(max, Math.max(min, n));
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const body = document.body;
+
+      /* language toggle */
+      const lang = document.getElementById('lang');
+      const applyLanguage = next => {
+        body.dataset.lang = next;
+        document.documentElement.lang = next;
+        document.documentElement.dir = next === 'ar' ? 'rtl' : 'ltr';
+        document.querySelectorAll('a[href]').forEach(link => {
+          const raw = link.getAttribute('href') || '';
+          if (!raw.includes('.php')) return;
+          const target = new URL(raw, location.href);
+          if (target.origin !== location.origin) return;
+          target.searchParams.set('lang', next);
+          link.href = target.toString();
+        });
+      };
+      applyLanguage(body.dataset.lang === 'en' ? 'en' : 'ar');
+      lang?.addEventListener('click', () => applyLanguage(body.dataset.lang === 'ar' ? 'en' : 'ar'));
+
+      /* mobile menu */
+      const menuBtn = document.getElementById('menuBtn');
+      const menu = document.getElementById('mobileMenu');
+      const closeBtn = document.getElementById('mobileClose');
+      const setMenu = open => {
+        menuBtn.classList.toggle('open', open);
+        menu.classList.toggle('open', open);
+        menuBtn.setAttribute('aria-expanded', String(open));
+        menu.setAttribute('aria-hidden', String(!open));
+        body.style.overflow = open ? 'hidden' : '';
+      };
+      menuBtn.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
+      closeBtn.addEventListener('click', () => setMenu(false));
+      menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false)));
+      addEventListener('keydown', event => { if(event.key === 'Escape') setMenu(false); });
+      addEventListener('resize', () => { if(innerWidth > 900) setMenu(false); }, {passive:true});
+
+      /* ===== Cinematic frame scrubbing (2 shared videos → 4 canvases) ===== */
+      class FrameCanvas {
+        constructor(canvases, source){
+          this.canvases = canvases;
+          this.ctxs = canvases.map(c => c.getContext('2d'));
+          this.video = document.createElement('video');
+          this.video.src = source;
+          this.video.preload = 'auto';
+          this.video.muted = true;
+          this.video.playsInline = true;
+          this.video.tabIndex = -1;
+          this.video.setAttribute('aria-hidden','true');
+          Object.assign(this.video.style,{position:'fixed',width:'1px',height:'1px',opacity:'0',pointerEvents:'none',clipPath:'inset(50%)'});
+          document.body.appendChild(this.video);
+          this.duration = 5.5; this.requested = 0; this.ready = false; this.seeking = false;
+          this.video.addEventListener('loadedmetadata', () => {
+            this.duration = Number.isFinite(this.video.duration) ? this.video.duration : 5.5;
+            this.ready = true; this.resize(); this.seek(this.requested, true);
+          });
+          this.video.addEventListener('loadeddata', () => this.draw());
+          this.video.addEventListener('seeked', () => {
+            this.seeking = false; this.draw();
+            const target = this.requested * Math.max(.01, this.duration - .04);
+            if(Math.abs(this.video.currentTime - target) > .04) requestAnimationFrame(() => this.flush());
+          });
+          this.canvases.forEach(c => new ResizeObserver(() => this.resize()).observe(c));
+          this.video.load();
+        }
+        resize(){
+          const ratio = Math.min(1.5, devicePixelRatio || 1);
+          this.canvases.forEach(canvas => {
+            const rect = canvas.getBoundingClientRect();
+            const width = Math.max(2, Math.round(rect.width * ratio));
+            const height = Math.max(2, Math.round(rect.height * ratio));
+            if(canvas.width !== width || canvas.height !== height){ canvas.width = width; canvas.height = height; }
+          });
+          this.draw();
+        }
+        draw(){
+          if(!this.ready || this.video.readyState < 2) return;
+          const sw = this.video.videoWidth, sh = this.video.videoHeight;
+          if(!sw || !sh) return;
+          this.canvases.forEach((canvas, k) => {
+            const dw = canvas.width, dh = canvas.height;
+            if(!dw || !dh) return;
+            const scale = Math.max(dw/sw, dh/sh);
+            const w = sw*scale, h = sh*scale;
+            this.ctxs[k].drawImage(this.video, (dw-w)/2, (dh-h)/2, w, h);
+          });
+        }
+        seek(progress, force=false){
+          this.requested = clamp(progress);
+          if(!this.ready) return;
+          if(force){ this.seeking = false; }
+          this.flush();
+        }
+        flush(){
+          if(this.seeking || !this.ready) return;
+          const target = this.requested * Math.max(.01, this.duration - .04);
+          if(Math.abs(this.video.currentTime - target) < .025){ this.draw(); return; }
+          this.seeking = true; this.video.currentTime = target;
+        }
+      }
+
+      const $ = id => document.getElementById(id);
+      let playerByScene = [];
+      if(!reduce){
+        const srcA = $('scene0Canvas').dataset.source || 'assets/intro-scroll.mp4';
+        const srcB = $('scene1Canvas').dataset.source || 'assets/after-dark.mp4';
+        const playerA = new FrameCanvas([$('scene0Canvas'), $('scene2Canvas')], srcA);
+        const playerB = new FrameCanvas([$('scene1Canvas'), $('scene3Canvas')], srcB);
+        playerByScene = [playerA, playerB, playerA, playerB];
+      }
+
+      /* fit the animated leaf logo (native 1024x369) into its wrapper via scale */
+      function fitLogos(){
+        document.querySelectorAll('.scene-logo-wrap').forEach(wrap => {
+          const f = wrap.querySelector('.scene-logo');
+          if(!f) return;
+          const s = wrap.clientWidth / 1024;
+          f.style.transform = `scale(${s})`;
+          wrap.style.height = (369 * s) + 'px';
+        });
+      }
+      fitLogos();
+      addEventListener('resize', fitLogos);
+      document.querySelectorAll('.scene-logo').forEach(f => f.addEventListener('load', fitLogos));
+      const scenes = [...document.querySelectorAll('.story-scene')];
+      const switchers = [...document.querySelectorAll('[data-go-scene]')];
+      const intro = document.getElementById('intro');
+      const stage = document.getElementById('storyStage');
+      const guide = document.getElementById('cineGuide');
+      const pBar = document.getElementById('cineProgressBar');
+      const pText = document.getElementById('cineProgressText');
+      const cornerBrand = document.getElementById('cornerBrand');
+      const nav = document.getElementById('nav');
+      const storyMedia = document.querySelector('.story-media');
+      let activeScene = 0, ticking = false;
+      const smooth = v => { const t = clamp(v); return t*t*(3-2*t); };
+      function sceneOpacity(p, i){
+        const seg = .25, s = i*seg, e = (i+1)*seg, f = .045;
+        const fi = i === 0 ? 1 : smooth((p-(s-f))/(f*2));
+        const fo = i === 3 ? 1 : 1-smooth((p-(e-f))/(f*2));
+        return Math.min(fi, fo);
+      }
+      function update(){
+        ticking = false;
+        const range = Math.max(1, intro.offsetHeight - innerHeight);
+        const p = clamp((scrollY - intro.offsetTop)/range);
+        activeScene = Math.min(3, Math.floor(p*4));
+        scenes.forEach((sc, i) => {
+          const o = reduce ? (i === 0 ? 1 : 0) : sceneOpacity(p, i);
+          sc.style.opacity = String(o);
+          sc.classList.toggle('active', i === activeScene);
+          const local = clamp((p - i * .25) * 4); // 0→1 progress within this scene
+          sc.style.setProperty('--cine-zoom', String(1 + local * 0.16)); // zoom in as you scroll
+        });
+        const activeLocal = clamp((p - activeScene*.25)*4);
+        stage.style.setProperty('--leaf-zoom', String(1 + activeLocal*0.16)); // leaves zoom in sync with the background
+        if(playerByScene[activeScene]) playerByScene[activeScene].seek(activeLocal);
+        switchers.forEach((b, i) => b.classList.toggle('active', i === activeScene));
+        pBar.style.height = `${p*100}%`;
+        pText.textContent = String(activeScene+1).padStart(2,'0');
+        guide.style.opacity = String(1 - clamp(p/.08));
+        cornerBrand.style.opacity = String(smooth((p-0.2)/0.06) * (1 - smooth((p-0.8)/0.08)));
+        const past = p > 0.82;
+        nav.classList.toggle('visible', past);
+        nav.classList.toggle('scrolled', past);
+        if(storyMedia && !reduce){
+          const storyRect = storyMedia.getBoundingClientRect();
+          const storyProgress = clamp((innerHeight - storyRect.top) / Math.max(1, innerHeight + storyRect.height));
+          storyMedia.style.setProperty('--story-shift', `${(storyProgress - .5) * 28}px`);
+        }
+      }
+      function req(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
+      addEventListener('scroll', req, {passive:true});
+      addEventListener('resize', req, {passive:true});
+      update();
+
+      stage.addEventListener('pointermove', e => {
+        if(e.pointerType === 'touch' && !e.isPrimary) return;
+        const r = stage.getBoundingClientRect();
+        const x = clamp((e.clientX - r.left)/Math.max(1, r.width));
+        const y = clamp((e.clientY - r.top)/Math.max(1, r.height));
+        stage.style.setProperty('--px', `${x*100}%`);
+        stage.style.setProperty('--py', `${y*100}%`);
+        if(playerByScene[activeScene]) playerByScene[activeScene].seek(x);
+      }, {passive:true});
+
+      switchers.forEach((b, i) => b.addEventListener('click', () => {
+        const range = Math.max(1, intro.offsetHeight - innerHeight);
+        scrollTo({top: intro.offsetTop + range*(i*.25 + .02), behavior: reduce ? 'auto' : 'smooth'});
+      }));
+
+      /* distribution steps active state */
+      const steps = [...document.querySelectorAll('.step')];
+      steps.forEach(step => {
+        const activate = () => steps.forEach(s => s.classList.toggle('active', s === step));
+        step.addEventListener('mouseenter', activate);
+        step.addEventListener('focus', activate);
+        step.addEventListener('click', activate);
+      });
+
+      /* reveal on scroll */
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, {threshold:.12, rootMargin:'0px 0px -6%'});
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+      if(reduce) nav.classList.add('visible');
+    })();
+  </script>
+  <script src="<?= h(site_url('assets/js/v2.js?v=3.0.0')) ?>" defer></script>
+</body>
+</html>

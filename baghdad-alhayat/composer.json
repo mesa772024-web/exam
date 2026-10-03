@@ -1,0 +1,13 @@
+{
+  "name": "al-hayat/scientific-office-website",
+  "description": "Dynamic bilingual PHP website for Baghdad Al Hayat Scientific Office",
+  "type": "project",
+  "require": {
+    "php": ">=8.1",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-mbstring": "*",
+    "ext-fileinfo": "*",
+    "ext-zip": "*"
+  }
+}

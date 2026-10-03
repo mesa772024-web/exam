@@ -1,1 +1,7 @@
 *.zip
+# runtime files written by the sites when they run
+*/storage/config.php
+*/storage/app.key
+*/storage/private/
+*/storage/backups/
+*/storage/updates/
