@@ -23,6 +23,7 @@ $languageSwitching = language_switching_enabled();
   <title><?= $isAr ? 'مكتب الحياة العلمي | Al Hayat Scientific Office' : 'Al Hayat Scientific Office | Where the patient is our priority' ?></title>
   <link rel="icon" href="assets/logo.png">
   <link rel="stylesheet" href="<?= h(site_url('assets/css/landing-fonts.css')) ?>">
+  <link rel="stylesheet" href="<?= h(site_url('assets/ambient/ambient.css?v=1.0.0')) ?>">
   <style>
     :root{
       --bg:#ffffff;
@@ -1102,5 +1103,6 @@ $languageSwitching = language_switching_enabled();
     })();
   </script>
   <script src="<?= h(site_url('assets/js/v2.js?v=3.0.0')) ?>" defer></script>
+<script src="<?= h(site_url('assets/ambient/ambient.js?v=1.0.0')) ?>" defer></script>
 </body>
 </html>

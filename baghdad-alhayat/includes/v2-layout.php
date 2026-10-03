@@ -27,6 +27,7 @@ function render_v2_head(string $locale, string $title = '', string $description 
   <link rel="stylesheet" href="<?= h(site_url('assets/css/landing-fonts.css')) ?>">
   <link rel="stylesheet" href="<?= h(site_url('assets/css/v2.css')) ?>">
   <link rel="stylesheet" href="<?= h(site_url('assets/css/landing-pages.css?v=3.0.0')) ?>">
+  <link rel="stylesheet" href="<?= h(site_url('assets/ambient/ambient.css?v=1.0.0')) ?>">
   <style>:root{--brand:<?= h(setting('primaryColor','#7a1440')) ?>;--accent:<?= h(setting('accentColor','#b5344d')) ?>;--soft:<?= h(setting('surfaceColor','#f7f2f5')) ?>}</style>
   <?php $customStyles = element_styles_css($scope); if ($customStyles !== ''): ?><style><?= $customStyles ?></style><?php endif; ?>
 </head>
@@ -122,6 +123,7 @@ function render_v2_footer(string $locale): void
   </div>
 </footer>
 <script src="<?= h(site_url('assets/js/v2.js?v=3.0.0')) ?>" defer></script>
+<script src="<?= h(site_url('assets/ambient/ambient.js?v=1.0.0')) ?>" defer></script>
 </body></html>
 <?php
 }
