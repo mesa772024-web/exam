@@ -1,41 +1,115 @@
 
-    /* ===================== visual polish (CSS only) ===================== */
-    :root{--polish-sh:0 1px 2px rgba(12,48,32,.04),0 14px 34px -14px rgba(12,48,32,.18);--polish-sh-lg:0 2px 4px rgba(12,48,32,.04),0 30px 60px -24px rgba(12,48,32,.30)}
-    h1,h2,h3,.sec-title,.hero-title,.stats-title{text-wrap:balance}
+    /* ===================== professional polish (CSS only) ===================== */
+    :root{--polish-sh:0 1px 2px rgba(12,48,32,.05),0 12px 30px -14px rgba(12,48,32,.20);--polish-sh-lg:0 2px 6px rgba(12,48,32,.05),0 30px 60px -26px rgba(12,48,32,.34);--polish-gap:clamp(72px,8vw,120px)}
+    h1,h2,h3,.sec-title,.hero-title,.stats-title,.hc-title{text-wrap:balance}
     p{text-wrap:pretty}
+    figure{margin:0}
     ::-webkit-scrollbar{width:11px;height:11px}
     ::-webkit-scrollbar-track{background:var(--bg-soft)}
     ::-webkit-scrollbar-thumb{background:linear-gradient(var(--green-600),var(--green-700));border-radius:20px;border:3px solid var(--bg-soft)}
-    /* headings */
-    .stats-title{max-width:32ch}
+
+    /* ---- rhythm: every section breathes the same ---- */
+    .services-wrap>.block{padding:var(--polish-gap) 0}
+    #vision.block{padding-block:clamp(64px,7vw,104px)}
     .sec-title .hl{background:linear-gradient(90deg,var(--green-700),var(--green-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-    .services-head p{border-inline-start:2px solid var(--green-100);padding-inline-start:18px;line-height:1.85}
-    /* buttons: shine sweep */
+
+    /* ---- hero ---- */
+    .hero-head{align-items:flex-end;gap:clamp(18px,4vw,64px)}
+    .hero-sub{max-width:440px;font-size:clamp(.98rem,1.15vw,1.1rem);line-height:1.8;padding-bottom:.35em}
+    .hc-copy{font-size:.98rem;line-height:1.8}
+    .hc-cta{padding-top:clamp(28px,3vw,40px);gap:18px 22px;align-items:center}
+    .hc-proof{padding-inline-start:20px;border-inline-start:1px solid rgba(255,255,255,.22)}
+    .hc-proof small{font-size:.74rem}
+    .hc-right{gap:16px}
+    .featured{display:flex;flex-direction:column}
+    .featured p{font-size:.8rem;line-height:1.6}
+    .featured .row{margin-top:16px}
+
+    /* ---- trust strip ---- */
+    .trust-inner span{font-size:.8rem}
+    .trust-badges b{font-size:.86rem}
+
+    /* ---- stats ---- */
+    .stats-title{max-width:44ch;font-size:clamp(1.45rem,2.4vw,2.05rem);line-height:1.3}
+
+    /* ---- story ---- */
+    .story-stamp span{font-size:.82rem;max-width:220px;line-height:1.55}
+    .home-kpis div{background:linear-gradient(160deg,#fff,var(--green-050));box-shadow:var(--polish-sh);transition:transform .35s var(--ease),box-shadow .35s}
+    .home-kpis div:hover{transform:translateY(-3px);box-shadow:var(--polish-sh-lg)}
+    .home-kpis span{font-size:.8rem;line-height:1.5}
+
+    /* ---- vision ---- */
+    .vision-aside{background:linear-gradient(160deg,var(--green-050),#fff);box-shadow:var(--polish-sh)}
+    .vision-aside .big{background:linear-gradient(90deg,var(--green-700),var(--green-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .vision-aside p{font-size:.92rem;line-height:1.7}
+
+    /* ---- services ---- */
+    .services-head{align-items:flex-end}
+    .services-head p{max-width:440px;font-size:.98rem;line-height:1.8;border-inline-start:2px solid var(--green-100);padding-inline-start:18px}
+    .service{box-shadow:var(--polish-sh);display:flex;flex-direction:column}
+    .service p{font-size:.9rem;line-height:1.75}
+    .service .no{color:var(--green-100);font-size:.8rem}
+    .service::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--green-500),var(--green-700));transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+    html[dir="rtl"] .service::before{transform-origin:right}
+    .service:hover::before{transform:scaleX(1)}
+    .service:hover{box-shadow:var(--polish-sh-lg)}
+    .service:hover .ico{box-shadow:0 10px 24px -8px rgba(18,105,63,.55);transform:rotate(-6deg)}
+
+    /* ---- quality proof (dark) ---- */
+    .proof-head .hl{background:linear-gradient(90deg,#8ff0bb,#4fd38e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .proof-grid{align-items:stretch}
+    .proof-image{min-height:0;height:100%}
+    .proof-card{min-height:0;gap:18px;transition:transform .4s var(--ease),background .4s,border-color .4s}
+    .proof-card:hover{transform:translateY(-5px);background:rgba(255,255,255,.11);border-color:rgba(143,240,187,.35)}
+    .proof-card p{font-size:.82rem}
+
+    /* ---- partners ---- */
+    .partner-tile{box-shadow:var(--polish-sh);min-height:150px}
+    .partner-tile img{max-width:min(78%,190px);max-height:72px;filter:grayscale(1) contrast(.95);opacity:.75;transition:filter .35s,opacity .35s,transform .35s var(--ease)}
+    .partner-tile:hover img{filter:none;opacity:1;transform:scale(1.05)}
+    .partner-tile img[src*="pharmanovia"],.partner-tile img[src*="cheplapharm"]{transform:scale(1.75)}
+    .partner-tile img[src*="abbvie"]{transform:scale(1.35)}
+    .partner-tile:hover img[src*="pharmanovia"],.partner-tile:hover img[src*="cheplapharm"]{transform:scale(1.85)}
+    .partner-tile:hover img[src*="abbvie"]{transform:scale(1.42)}
+    .partner-name{font-size:1.45rem;letter-spacing:-.01em}
+
+    /* ---- network steps ---- */
+    .step{box-shadow:var(--polish-sh)}
+    .step:hover,.step.active{box-shadow:var(--polish-sh-lg)}
+    .step p{font-size:.86rem;line-height:1.65}
+
+    /* ---- buttons: shine sweep ---- */
     .btn{position:relative;overflow:hidden;isolation:isolate}
     .btn::after{content:"";position:absolute;z-index:-1;top:-20%;bottom:-20%;width:38%;left:-60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);pointer-events:none}
     .btn:hover::after{animation:polishShine .9s var(--ease)}
     @keyframes polishShine{to{left:130%}}
     .btn-brand{background:linear-gradient(135deg,var(--green-600),var(--green-700))}
-    /* service cards: layered shadow, gradient hairline, icon glow */
-    .service{box-shadow:var(--polish-sh)}
-    .service::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--green-500),var(--green-700));transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
-    body[dir="rtl"] .service::before,html[dir="rtl"] .service::before{transform-origin:right}
-    .service:hover::before{transform:scaleX(1)}
-    .service:hover{box-shadow:var(--polish-sh-lg)}
-    .service:hover .ico{box-shadow:0 10px 24px -8px rgba(18,105,63,.55);transform:rotate(-6deg)}
-    /* KPI tiles & vision card */
-    .home-kpis div{background:linear-gradient(160deg,#fff,var(--green-050));box-shadow:var(--polish-sh);transition:transform .35s var(--ease),box-shadow .35s}
-    .home-kpis div:hover{transform:translateY(-3px);box-shadow:var(--polish-sh-lg)}
-    .vision-aside{background:linear-gradient(160deg,var(--green-050),#fff);box-shadow:var(--polish-sh)}
-    .vision-aside .big{background:linear-gradient(90deg,var(--green-700),var(--green-500));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-    /* quality proof cards on dark */
-    .proof-card{transition:transform .4s var(--ease),background .4s,border-color .4s}
-    .proof-card:hover{transform:translateY(-5px);background:rgba(255,255,255,.11);border-color:rgba(143,240,187,.35)}
-    /* partners: calm grey logos that wake up on hover */
-    .partner-tile{box-shadow:var(--polish-sh)}
-    .partner-tile img{filter:grayscale(1) contrast(.95);opacity:.75}
-    .partner-tile:hover img{filter:none;opacity:1;transform:scale(1.05)}
-    /* network steps */
-    .step{box-shadow:var(--polish-sh)}
-    .step:hover,.step.active{box-shadow:var(--polish-sh-lg)}
+
+    /* ---- footer ---- */
+    footer a{transition:color .2s}
+
+    @media(max-width:1100px){
+      .proof-image{min-height:420px;height:auto}
+    }
+    @media(max-width:760px){
+      .hero-sub{max-width:none}
+      .hc-cta{flex-direction:row}
+      .hc-proof{padding-inline-start:0;border:0}
+      .featured{min-height:0;flex:0 0 auto}
+      .hc-right{min-height:0}
+      .partner-tile img[src*="pharmanovia"],.partner-tile img[src*="cheplapharm"],.partner-tile:hover img[src*="pharmanovia"],.partner-tile:hover img[src*="cheplapharm"]{transform:scale(1.25)}
+      .partner-tile img[src*="abbvie"],.partner-tile:hover img[src*="abbvie"]{transform:scale(1.15)}
+      .proof-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+      .proof-card{padding:20px 18px;gap:12px}
+      .proof-card strong{font-size:1.9rem}
+      .proof-image{min-height:300px}
+      .partner-wall{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+      .partner-tile{min-height:92px;padding:12px;border-radius:16px}
+      .partner-tile img{max-width:86%;max-height:40px}
+      .partner-name{font-size:1.05rem}
+      .story-stamp span{font-size:.74rem}
+    }
+    @media(max-width:420px){
+      .proof-cards{grid-template-columns:1fr}
+    }
     @media(prefers-reduced-motion:reduce){.btn:hover::after{animation:none}.service::before{transition:none}}

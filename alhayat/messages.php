@@ -17,27 +17,19 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             header('Location: ' . site_url('messages.php?lang=' . $locale . '&sent=1'));
             exit;
         }
-        $fullName = clean_text($_POST['full_name'] ?? '', 160);
-        $email = mb_strtolower(clean_text($_POST['email'] ?? '', 190), 'UTF-8');
-        $phone = clean_text($_POST['phone'] ?? '', 50);
-        $subject = clean_text($_POST['subject'] ?? '', 190);
         $message = clean_multiline($_POST['message'] ?? '', 4000);
-        $old = ['full_name' => $fullName, 'email' => $email, 'phone' => $phone, 'subject' => $subject, 'message' => $message];
+        $old['message'] = $message;
 
-        if ($fullName === '' || mb_strlen($message) < 3) {
-            throw new RuntimeException($isAr ? 'يرجى إدخال الاسم ونص الرسالة.' : 'Please enter your name and a message.');
-        }
-        // Email is OPTIONAL — validate only when provided.
-        if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new RuntimeException($isAr ? 'صيغة البريد الإلكتروني غير صحيحة، أو اتركه فارغاً.' : 'The email format is invalid — or leave it empty.');
+        if (mb_strlen($message) < 3) {
+            throw new RuntimeException($isAr ? 'يرجى كتابة رسالتك.' : 'Please write your message.');
         }
         db()->prepare('INSERT INTO contact_messages(id, full_name, email, phone, subject, message) VALUES(:id, :full_name, :email, :phone, :subject, :message)')
             ->execute([
                 'id' => uuid_v4(),
-                'full_name' => $fullName,
-                'email' => $email,
-                'phone' => $phone !== '' ? $phone : null,
-                'subject' => $subject !== '' ? $subject : ($isAr ? 'رسالة عامة' : 'General message'),
+                'full_name' => $isAr ? 'مجهول' : 'Anonymous',
+                'email' => '',
+                'phone' => null,
+                'subject' => 'Speak Up',
                 'message' => $message,
             ]);
         header('Location: ' . site_url('messages.php?lang=' . $locale . '&sent=1'));
@@ -89,7 +81,7 @@ render_v2_nav($locale);
     <div class="speakup-head">
       <span class="speakup-eyebrow">Speak Up</span>
       <h1><?= $isAr ? 'أسمِعنا صوتك' : 'Speak Up' ?></h1>
-      <p><?= $isAr ? 'اكتب رسالتك وستصل مباشرة إلى مكتب الحياة العلمي. البريد الإلكتروني اختياري.' : 'Write your message and it goes straight to Al Hayat Scientific Office. Email is optional.' ?></p>
+      <p><?= $isAr ? 'اكتب رسالتك وستصل مباشرة إلى مكتب الحياة العلمي.' : 'Write your message and it goes straight to Al Hayat Scientific Office.' ?></p>
     </div>
 
     <?php if ($sent): ?>
@@ -104,22 +96,6 @@ render_v2_nav($locale);
         <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
         <div class="speakup-hp" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
         <div class="speakup-grid">
-          <div class="speakup-field">
-            <label for="su-name"><?= $isAr ? 'الاسم' : 'Name' ?></label>
-            <input id="su-name" name="full_name" maxlength="160" required autocomplete="name" value="<?= h($old['full_name']) ?>" placeholder="<?= $isAr ? 'اسمك الكامل' : 'Your full name' ?>">
-          </div>
-          <div class="speakup-field">
-            <label for="su-email"><?= $isAr ? 'البريد الإلكتروني' : 'Email' ?> <span class="opt"><?= $isAr ? '(اختياري)' : '(optional)' ?></span></label>
-            <input id="su-email" name="email" type="email" maxlength="190" autocomplete="email" dir="ltr" value="<?= h($old['email']) ?>" placeholder="name@example.com">
-          </div>
-          <div class="speakup-field">
-            <label for="su-phone"><?= $isAr ? 'الهاتف' : 'Phone' ?> <span class="opt"><?= $isAr ? '(اختياري)' : '(optional)' ?></span></label>
-            <input id="su-phone" name="phone" maxlength="50" dir="ltr" autocomplete="tel" value="<?= h($old['phone']) ?>" placeholder="+964 …">
-          </div>
-          <div class="speakup-field">
-            <label for="su-subject"><?= $isAr ? 'الموضوع' : 'Subject' ?> <span class="opt"><?= $isAr ? '(اختياري)' : '(optional)' ?></span></label>
-            <input id="su-subject" name="subject" maxlength="190" value="<?= h($old['subject']) ?>" placeholder="<?= $isAr ? 'موضوع الرسالة' : 'Message subject' ?>">
-          </div>
           <div class="speakup-field full">
             <label for="su-message"><?= $isAr ? 'رسالتك' : 'Your message' ?></label>
             <textarea id="su-message" name="message" maxlength="4000" required placeholder="<?= $isAr ? 'اكتب رسالتك هنا…' : 'Write your message here…' ?>"><?= h($old['message']) ?></textarea>
