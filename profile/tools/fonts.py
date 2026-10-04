@@ -20,9 +20,8 @@ WEIGHTS = {"Thin": 100, "ExtraLight": 200, "Light": 300, "Regular": 400, "Medium
 
 # Used only for an explicitly requested --preview build when Thmanyah is not installed.
 PREVIEW_FALLBACK = {
-    "Thmanyah Serif Display": "Amiri",
-    "Thmanyah Serif Text": "Amiri",
-    "Thmanyah Sans": "Readex Pro",
+    "thmanyah serif display": "Amiri",
+    "thmanyah sans": "Readex Pro",
 }
 
 
@@ -38,7 +37,7 @@ def catalog():
         if not d.exists():
             continue
         for p in sorted(d.rglob("*")):
-            if p.suffix.lower() not in (".ttf", ".otf"):
+            if p.suffix.lower() not in (".ttf", ".otf", ".woff2", ".woff"):
                 continue
             try:
                 n = TTFont(p, lazy=True)["name"]

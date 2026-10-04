@@ -50,9 +50,13 @@ for _bg, (_a, _b) in PATTERN.items():
         COLORS[f"Pattern {_bg} {_k}"] = _mix(_a, _b, _k / 4)
 
 # ------------------------------------------------------------------ fonts --
-DISPLAY = "Thmanyah Serif Display"   # headlines, figures
-SANS = "Thmanyah Sans"               # labels, sub-heads, UI text
-TEXT = "IBM Plex Sans Arabic"        # running text and English lines
+# Family / style names exactly as stored inside the Thmanyah files, so InDesign
+# matches them once the official fonts are installed.
+DISPLAY = ("thmanyah serif display", "Bold")   # headlines, figures
+SANS = ("thmanyah sans", "Regular")
+SANS_MED = ("thmanyah sans", "Medium")
+SANS_BOLD = ("thmanyah sans", "Bold")
+TEXT = "IBM Plex Sans Arabic"                  # running text and English lines
 
 # InDesign style name -> CSS weight / italic
 FONT_STYLES = {
@@ -96,62 +100,62 @@ def ps(*args, **kw):
 
 
 # running elements
-ps("Running Head", SANS, "Medium", 8.5, 12, "Deep")
+ps("Running Head", *SANS_MED, 8.5, 12, "Deep")
 ps("Folio", TEXT, "Medium", 9, 12, "GoldDark", align="left", rtl=False)
 # section openers
-ps("Kicker", SANS, "Bold", 9.5, 13, "GoldDark")
-ps("Kicker Centre", SANS, "Bold", 9.5, 13, "GoldDark", align="center")
-ps("Section Title", DISPLAY, "Bold", 34, 46, "Deep")
-ps("Section Title Centre", DISPLAY, "Bold", 34, 46, "Deep", align="center")
+ps("Kicker", *SANS_BOLD, 9.5, 13, "GoldDark")
+ps("Kicker Centre", *SANS_BOLD, 9.5, 13, "GoldDark", align="center")
+ps("Section Title", *DISPLAY, 34, 46, "Deep")
+ps("Section Title Centre", *DISPLAY, 34, 46, "Deep", align="center")
 ps("Body", TEXT, "Regular", 12, 22.5, "Ink", align="justify")
-ps("Intro", SANS, "Medium", 13, 22, "Deep")
-ps("Sub Head", SANS, "Bold", 14, 20, "Deep")
+ps("Intro", *SANS_MED, 13, 22, "Deep")
+ps("Sub Head", *SANS_BOLD, 14, 20, "Deep")
 # figures
-ps("Stat Number", DISPLAY, "Bold", 36, 42, "Gold", align="center")
-ps("Stat Label", SANS, "Medium", 10, 14, "Deep", align="center")
+ps("Stat Number", *DISPLAY, 36, 42, "Gold", align="center")
+ps("Stat Label", *SANS_MED, 10, 14, "Deep", align="center")
 # cards
-ps("Card Number", DISPLAY, "Bold", 26, 30, "Gold")
-ps("Card Number Centre", DISPLAY, "Bold", 26, 30, "Gold", align="center")
-ps("Card Title", SANS, "Bold", 13.5, 19, "Deep")
-ps("Card Title Centre", SANS, "Bold", 13, 18, "Deep", align="center")
+ps("Card Number", *DISPLAY, 26, 30, "Gold")
+ps("Card Number Centre", *DISPLAY, 26, 30, "Gold", align="center")
+ps("Card Title", *SANS_BOLD, 13.5, 19, "Deep")
+ps("Card Title Centre", *SANS_BOLD, 13, 18, "Deep", align="center")
 ps("Card Text", TEXT, "Regular", 10, 17, "Ink")
-ps("Label", SANS, "Medium", 9, 13, "GoldDark")
-ps("Label On Deep", SANS, "Medium", 9, 13, "GoldLight")
+ps("Label", *SANS_MED, 9, 13, "GoldDark")
+ps("Label On Deep", *SANS_MED, 9, 13, "GoldLight")
 ps("List Centre", TEXT, "Regular", 10.5, 17, "Ink", align="center",
    pad_top=5.5, pad_bottom=5.5, rule_above=("Line", 0.6))
 ps("List", TEXT, "Regular", 10.5, 17, "Ink",
    pad_top=5.5, pad_bottom=5.5, rule_above=("Line", 0.6))
 ps("List On Deep", TEXT, "Regular", 10.5, 17, "Cream",
    pad_top=5.5, pad_bottom=5.5, rule_above=("DeepLine", 0.6))
-ps("Pill", SANS, "Medium", 10.5, 14, "Deep", align="center")
-ps("Tier Title", DISPLAY, "Bold", 24, 32, "Deep")
-ps("Tier Title On Deep", DISPLAY, "Bold", 24, 32, "Cream")
-ps("Note", SANS, "Medium", 10.5, 14, "Deep", align="center")
-ps("Logo Label", SANS, "Medium", 9, 13, "Deep", align="center")
+ps("Pill", *SANS_MED, 10.5, 14, "Deep", align="center")
+ps("Tier Title", *DISPLAY, 24, 32, "Deep")
+ps("Tier Title On Deep", *DISPLAY, 24, 32, "Cream")
+ps("Note", *SANS_MED, 10.5, 14, "Deep", align="center")
+ps("Logo Label", *SANS_MED, 9, 13, "Deep", align="center")
 ps("Logo Label Latin", TEXT, "Medium", 9, 13, "Deep", align="center", rtl=False)
-ps("Highlight Title", SANS, "Bold", 14.5, 21, "GoldLight")
+ps("Highlight Title", *SANS_BOLD, 14.5, 21, "GoldLight")
 ps("Highlight Text", TEXT, "Regular", 10.5, 18, "Cream", align="justify")
-ps("Date Block", SANS, "Bold", 12, 16, "GoldLight")
+ps("Date Block", *SANS_BOLD, 12, 16, "GoldLight")
 # cover
-ps("Cover Year", SANS, "Bold", 9.5, 14, "GoldDark", align="center")
-ps("Cover Title", DISPLAY, "Bold", 32, 44, "Deep")
+ps("Cover Year", *SANS_BOLD, 9.5, 14, "GoldDark", align="center")
+ps("Cover Title", *DISPLAY, 26, 38, "Deep")
 ps("Cover English", TEXT, "Light", 13, 18, "Green", rtl=False, align="right")
-ps("Cover Theme", DISPLAY, "Medium", 16, 24, "GoldDark")
+ps("Cover Theme", *DISPLAY, 13.5, 22, "GoldDark")
 ps("Cover Theme English", TEXT, "Regular", 9.5, 13, "Green", rtl=False, align="right")
-ps("Cover Day", DISPLAY, "Bold", 48, 54, "Gold", align="center")
-ps("Cover Date", SANS, "Bold", 12, 16, "Deep")
-ps("Cover Date Sub", SANS, "Regular", 9.5, 14, "Muted")
+ps("Cover Day", *DISPLAY, 48, 54, "Gold", align="center")
+ps("Cover Date", *SANS_BOLD, 12, 16, "Deep")
+ps("Cover Date Sub", *SANS, 9.5, 14, "Muted")
 ps("Caps Latin", TEXT, "Medium", 6.5, 11, "GoldDark", rtl=False, align="right",
    tracking=150, caps=True)
 ps("Caps Latin Centre", TEXT, "Medium", 7, 12, "GoldLight", rtl=False, align="center",
    tracking=220, caps=True)
-ps("Cover Label", SANS, "Bold", 9, 13, "GoldDark")
+ps("Cover Label", *SANS_BOLD, 9, 13, "GoldDark")
 # back cover
-ps("Back Title", DISPLAY, "Bold", 30, 42, "Cream", align="center")
+ps("Back Title", *DISPLAY, 30, 42, "Cream", align="center")
 ps("Back English", TEXT, "Light", 12, 17, "GoldLight", align="center", rtl=False)
-ps("Back Theme", DISPLAY, "Medium", 25, 34, "GoldLight", align="center")
+ps("Back Theme", *DISPLAY, 25, 34, "GoldLight", align="center")
 ps("Back Theme English", TEXT, "Light", 12, 17, "Cream", align="center", rtl=False)
-ps("Back Date", SANS, "Medium", 11, 16, "Cream", align="center")
+ps("Back Date", *SANS_MED, 11, 16, "Cream", align="center")
 
 # character styles
 C = {
@@ -364,7 +368,7 @@ def page_cover():
     it[:0] = lattice((-BLEED, -BLEED, W + BLEED, H + BLEED), "Cream", (W, 0), 470, s=46)
     badge(it, R - 28, 64, 26, fill="Cream")
     it.append(Text(R - 88, 96, 120, 14, [P("Cover Year", "بغداد ٢٠٢٦")], name="year"))
-    it.append(Text(zx, 126, zw, 92, [
+    it.append(Text(394, 132, R - 394, 84, [
         P("Cover Title", "منتدى المسؤولية"),
         P("Cover Title", "الاجتماعية واستدامة الأعمال ", ("العراقي", "Gold Accent")),
     ], name="cover title"))
@@ -458,7 +462,7 @@ def page_objectives():
         y = 160 + row * (ch + gap)
         it.append(Rect(x, y, cw, ch, fill="Cream", name="goal card"))
         it.append(Rect(x, y, cw, 2, fill="Gold", name="goal rule"))
-        it.append(Text(x + 18, y + 12, cw - 36, ch - 20, [
+        it.append(Text(x + 18, y + 12, cw - 36, ch - 13, [
             P("Card Number", n),
             P("Card Title", t, sb=1),
             P("Card Text", d, sb=6),
@@ -514,7 +518,7 @@ def page_programme():
     cw = cr - zx
     gap = 10
     pw = (cw - 2 * gap) / 3
-    by, bh = 418, 112
+    by, bh = 422, 108
     steps = [175, 253, by + 25]
     it.append(Line(tx, steps[0], tx, steps[-1], "Gold", 1.1, name="timeline"))
     for y in steps:
@@ -535,9 +539,9 @@ def page_programme():
     ]
     for i, (n, lab, d) in enumerate(sessions):
         x = cr - (i + 1) * pw - i * gap
-        it.append(Rect(x, 270, pw, 132, fill="White", stroke="GoldLight", sw=0.75, name="session card"))
+        it.append(Rect(x, 270, pw, 140, fill="White", stroke="GoldLight", sw=0.75, name="session card"))
         it.append(Rect(x, 270, pw, 2, fill="Gold", name="session rule"))
-        it.append(Text(x + 13, 280, pw - 26, 118, [
+        it.append(Text(x + 13, 280, pw - 26, 133, [
             P("Card Number", n),
             P("Label", lab),
             P("Card Text", d, sb=3),
@@ -560,7 +564,7 @@ def page_partnership():
     zx = 450
     title_block(it, zx, R - zx, "◆  كن شريكاً في الأثر", "الشراكات والرعاية")
     it.append(Rect(M + 352, 84, 2.5, 60, fill="Gold", name="intro rule"))
-    it.append(Text(M, 80, 340, 74, [
+    it.append(Text(M, 80, 340, 92, [
         P("Intro", "يقدّم المنتدى فرصاً للمؤسسات الراغبة في دعم المسؤولية الاجتماعية وتعزيز حضورها المؤسسي أمام نخبة من صنّاع القرار والشركاء.")],
         name="intro"))
     tiers = [

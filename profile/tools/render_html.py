@@ -222,3 +222,5 @@ if __name__ == "__main__":
         if flag or "-v" in sys.argv:
             print(r["page"], r["name"], flag, round(r["slack"], 1), r["lines"])
     json.dump(rep, open(BUILD / "fit-report.json", "w"), ensure_ascii=False, indent=1)
+    if any(r["slack"] < -0.5 for r in rep):
+        sys.exit("text overflows a frame - fix the layout before shipping")

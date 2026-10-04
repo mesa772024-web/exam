@@ -24,7 +24,7 @@ def main():
         subprocess.run(["bash", str(HERE / "fetch_fonts.sh")], check=True)
     sys.path.insert(0, str(HERE))
     import fonts
-    missing = [f for f in ("Thmanyah Serif Display", "Thmanyah Sans") if not fonts.has_family(f)]
+    missing = [f for f in ("thmanyah serif display", "thmanyah sans") if not fonts.has_family(f)]
     if missing and not fonts.PREVIEW:
         sys.exit("Thmanyah is not installed: put the official font files (font.thmanyah.com) in "
                  "src/fonts-private/, or run with PROFILE_PREVIEW=1 for a layout preview.")

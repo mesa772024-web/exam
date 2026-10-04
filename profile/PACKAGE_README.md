@@ -9,7 +9,7 @@
 1. فكّ الضغط مع إبقاء مجلد `Links` بجانب ملف IDML.
 2. افتح الملف عبر File ▸ Open. إذا ظهرت الروابط مفقودة فاستخدم Links ▸ Relink to Folder واختر مجلد `Links`.
 3. ثبّت الخطوط التالية قبل الفتح:
-   - **خط ثمانية** (Thmanyah Serif Display و Thmanyah Sans): للعناوين والتسميات. يُنزَّل من الموقع الرسمي font.thmanyah.com، وترخيصه يسمح بالاستخدام التجاري لكنه يمنع إعادة توزيع ملفاته، لذلك لم تُضمَّن في الحزمة.
+   - **خط ثمانية**: يظهر في InDesign باسمَي العائلتين `thmanyah serif display` (Bold) للعناوين والأرقام، و `thmanyah sans` (Regular, Medium, Bold) للتسميات والعناوين الفرعية. يُنزَّل من الموقع الرسمي font.thmanyah.com. ترخيصه يسمح بالاستخدام التجاري لكنه يمنع إعادة توزيع ملفاته، لذلك لم تُضمَّن في الحزمة.
    - **IBM Plex Sans Arabic** (Light, Regular, Medium, SemiBold): لنصوص الفقرات والأسطر الإنجليزية. من Google Fonts.
    - **Noto Sans Symbols 2** (Regular): لرمز المعيّن «◆» فقط، عبر نمط الحرف `Ornament`. من Google Fonts.
 
