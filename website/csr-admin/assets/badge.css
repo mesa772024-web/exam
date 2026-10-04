@@ -1,0 +1,43 @@
+/* مصمّم الباج */
+.badge-studio{display:grid;grid-template-columns:360px 1fr;gap:18px;align-items:start}
+.badge-side{display:flex;flex-direction:column;gap:16px}
+.badge-side .panel{margin-bottom:0}
+.badge-canvas-wrap{position:sticky;top:84px}
+.badge-toolbar{margin-bottom:12px}
+.badge-stage{background:linear-gradient(135deg,#e9eef5,#dde5f0);border:1px solid var(--line);border-radius:16px;
+  min-height:600px;display:grid;place-items:center;padding:20px;overflow:hidden}
+.badge-card{position:relative;background:#fff;box-shadow:0 20px 50px rgba(11,14,38,.25);border-radius:6px;overflow:hidden}
+.b-el{position:absolute;transform:translate(-50%,-50%);cursor:grab;user-select:none;line-height:1.15;
+  padding:2px 4px;border-radius:3px;transition:outline .1s}
+.b-el:hover{outline:1.5px dashed rgba(40,163,219,.6)}
+.b-el.sel{outline:2px solid var(--sky);outline-offset:1px}
+.b-el.drag{cursor:grabbing;outline:2px solid var(--sky)}
+.b-el img,.b-el canvas{display:block}
+
+.el-list{display:flex;flex-direction:column;gap:10px;max-height:none}
+.el-row{border:1.5px solid var(--line);border-radius:11px;padding:10px;background:#fbfcfe;cursor:pointer}
+.el-row.sel{border-color:var(--sky);box-shadow:0 0 0 3px rgba(40,163,219,.12)}
+.el-row-top{display:flex;gap:6px;align-items:center}
+.el-row-top select{flex:1;min-height:38px;padding:6px 8px}
+.mini-del{width:34px;height:34px;flex:none;border:1.5px solid #f1c4cd;color:var(--bad);background:#fff;border-radius:8px;font-weight:900}
+.el-row>input{margin-top:8px;width:100%}
+.el-row-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.el-row-grid label{font-size:12px;gap:3px}
+.el-row-grid input,.el-row-grid select{min-height:36px;padding:5px 8px}
+.el-row-grid input[type=color]{padding:2px;height:36px}
+.el-bold{flex-direction:row!important;align-items:center;gap:6px}
+.el-bold input{width:18px;height:18px;min-height:0}
+
+.radio-line{display:flex;align-items:center;gap:9px;padding:9px 0;font-weight:700;font-size:14px}
+.radio-line input{width:18px;height:18px}
+.bc-fields{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.chkchip{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:700;cursor:pointer}
+.chkchip input{width:16px;height:16px}
+.preset-btns{display:flex;flex-direction:column;gap:8px}
+.preset-btns .preset-btn{justify-content:flex-start;padding:12px 14px;text-align:start}
+
+@media(max-width:1000px){
+  .badge-studio{grid-template-columns:1fr}
+  .badge-canvas-wrap{position:static;order:-1}
+  .badge-stage{min-height:420px}
+}

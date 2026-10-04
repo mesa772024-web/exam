@@ -1,0 +1,56 @@
+{
+  "posts": [
+    {
+      "slug": "edition-2025",
+      "category": "event",
+      "label": {
+        "ar": "النسخة الثانية · 2025",
+        "en": "Second Edition · 2025"
+      },
+      "title": {
+        "ar": "من بناء الأسس إلى بناء المنظومة الوطنية للاقتصاد الرقمي",
+        "en": "From digital foundations to a national digital-economy ecosystem"
+      },
+      "text": {
+        "ar": "النسخة الثانية | قرية دجلة – بغداد 2025\nانعقدت النسخة الثانية من منتدى الاقتصاد الرقمي العراقي في قرية دجلة ببغداد، بمشاركة أكثر من 400 مشارك و24 متحدثاً، وقرابة 20 ساعة من المحتوى والنقاشات.\nوانتقلت النسخة الثانية من الحديث العام عن التحول الرقمي إلى ثلاثة ملفات أكثر تحديداً:\n• التشريع والتنظيم والإطار القانوني للاقتصاد الرقمي\n• البنية التحتية الرقمية والقطاع المالي\n• رأس المال البشري والمهارات الرقمية\nوخرجت النسخة بسبع عشرة توصية عملية مدعومة بمؤشرات قياس واضحة.",
+        "en": "Second Edition | Tigris Village – Baghdad 2025\nThe second edition of the Iraqi Digital Economy Forum was held at Tigris Village in Baghdad with more than 400 participants, 24 speakers and around 20 hours of content and discussion.\nThe second edition moved from general talk about digital transformation to three more specific areas:\n• Legislation, regulation and the legal framework of the digital economy\n• Digital infrastructure and the financial sector\n• Human capital and digital skills\nIt produced seventeen practical recommendations supported by clear performance indicators."
+      },
+      "images": [
+        {
+          "file": "media/editions/edition-2025.webp",
+          "thumb": "media/editions/edition-2025-thumb.webp",
+          "width": 1038,
+          "height": 286
+        }
+      ]
+    },
+    {
+      "slug": "edition-2024",
+      "category": "event",
+      "label": {
+        "ar": "النسخة الأولى · 2024",
+        "en": "First Edition · 2024"
+      },
+      "title": {
+        "ar": "انطلاقة المنتدى وبناء أسس الاقتصاد الرقمي العراقي",
+        "en": "The forum’s launch and the foundations of Iraq’s digital economy"
+      },
+      "text": {
+        "ar": "النسخة الأولى | فندق بابل – بغداد 2024\nانطلقت النسخة الأولى من منتدى الاقتصاد الرقمي العراقي في فندق بابل ببغداد، بمشاركة واسعة من شركات عالمية ومنظمات دولية والقطاعين العام والخاص.\nوناقشت النسخة التحديات الرقمية في العراق، وخرجت بخمس عشرة توصية استهدفت بناء الأسس اللازمة للاقتصاد الرقمي، من الشمول الرقمي والبنية التحتية إلى الأمن السيبراني ورقمنة الخدمات الحكومية ورأس المال البشري.",
+        "en": "First Edition | Babel Hotel – Baghdad 2024\nThe first edition of the Iraqi Digital Economy Forum was launched at Babel Hotel in Baghdad with broad participation from global companies, international organizations and Iraq’s public and private sectors.\nIt discussed Iraq’s digital challenges and issued fifteen recommendations aimed at building the foundations of the digital economy — from digital inclusion and infrastructure to cybersecurity, digital government services and human capital."
+      },
+      "images": [
+        {
+          "file": "media/editions/edition-2024.webp",
+          "thumb": "media/editions/edition-2024-thumb.webp",
+          "width": 977,
+          "height": 317
+        }
+      ]
+    }
+  ],
+  "thanks": {
+    "ar": "",
+    "en": ""
+  }
+}

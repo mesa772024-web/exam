@@ -2,3 +2,10 @@ profile/build/
 __pycache__/
 # Thmanyah licence forbids redistributing the font files
 profile/src/fonts-private/
+website/assets/fonts/thmanyah/
+# runtime data of the local dev install
+website/storage/database.php
+website/storage/installed.lock
+website/storage/logs/*.log
+website/storage/backups/*
+!website/storage/backups/.keep

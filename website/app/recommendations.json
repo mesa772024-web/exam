@@ -1,0 +1,420 @@
+{
+ "editions": [
+  {
+   "eyebrow": {
+    "ar": "النسخة الأولى · 2024",
+    "en": "First Edition · 2024"
+   },
+   "title": {
+    "ar": "توصيات النسخة الأولى",
+    "en": "First-edition recommendations"
+   },
+   "intro": {
+    "ar": "خرجت النسخة الأولى بمجموعة واسعة من التوصيات التي استهدفت بناء الأسس اللازمة للاقتصاد الرقمي العراقي.",
+    "en": "The first edition produced a broad set of recommendations aimed at building the foundations needed for Iraq’s digital economy."
+   },
+   "groups": [
+    {
+     "title": {
+      "ar": "التوصيات 1–15",
+      "en": "Recommendations 1–15"
+     },
+     "items": [
+      {
+       "id": 1,
+       "title": {
+        "ar": "تعزيز الشمول الرقمي",
+        "en": "Enhance digital inclusion"
+       },
+       "text": {
+        "ar": "العمل على زيادة نسبة وصول السكان إلى الإنترنت عالي السرعة لتصل إلى 90% بحلول عام 2030، مع إعطاء أولوية للمناطق الريفية والنائية وتقليص الفجوة الرقمية.",
+        "en": "Increase access to high-speed internet to 90% by 2030, prioritizing rural and remote areas and reducing the digital divide."
+       }
+      },
+      {
+       "id": 2,
+       "title": {
+        "ar": "تطوير البنية التحتية الرقمية",
+        "en": "Develop digital infrastructure"
+       },
+       "text": {
+        "ar": "تحديث وتوسيع البنية التحتية للاتصالات والتكنولوجيا بما يحقق تغطية المؤسسات الحكومية والخاصة وتوسيع إمكانية الوصول إلى الخدمات الرقمية، مع استهداف تغطية 100% بحلول عام 2027.",
+        "en": "Modernize and expand telecommunications and technology infrastructure to cover public and private institutions and target 100% coverage by 2027."
+       }
+      },
+      {
+       "id": 3,
+       "title": {
+        "ar": "اعتماد المعايير الدولية في البنية التحتية الرقمية",
+        "en": "Adopt international infrastructure standards"
+       },
+       "text": {
+        "ar": "الاستفادة من معايير وأطر الاتحاد الدولي للاتصالات ITU والاتحاد الأوروبي في تطوير البنية التحتية الرقمية وقطاع الاتصالات.",
+        "en": "Use ITU and European Union standards and frameworks in developing digital infrastructure and telecommunications."
+       }
+      },
+      {
+       "id": 4,
+       "title": {
+        "ar": "تعزيز الأمن السيبراني وحماية البيانات",
+        "en": "Strengthen cybersecurity and data protection"
+       },
+       "text": {
+        "ar": "رفع قدرات العراق في مجال الأمن السيبراني، وتحسين موقعه في مؤشر الأمن السيبراني العالمي GCI، وتعزيز حماية البيانات والشبكات، إلى جانب تنفيذ برامج للتوعية والتدريب في أمن المعلومات.",
+        "en": "Build Iraq’s cybersecurity capabilities, improve its position in the Global Cybersecurity Index (GCI), protect data and networks, and expand awareness and training."
+       }
+      },
+      {
+       "id": 5,
+       "title": {
+        "ar": "تسريع رقمنة الخدمات الحكومية",
+        "en": "Accelerate digitization of government services"
+       },
+       "text": {
+        "ar": "العمل على تحويل ما لا يقل عن 50% من الخدمات الحكومية إلى خدمات رقمية بحلول عام 2026، وتطوير منصات موحدة للخدمات الحكومية بما يرفع كفاءة الخدمات المقدمة للمواطنين.",
+        "en": "Convert at least 50% of government services to digital services by 2026 and develop unified government service platforms."
+       }
+      },
+      {
+       "id": 6,
+       "title": {
+        "ar": "التوسع في المدفوعات والمعاملات الرقمية",
+        "en": "Expand digital payments and transactions"
+       },
+       "text": {
+        "ar": "رفع نسبة المعاملات المالية الرقمية من خلال تطوير منظومة الدفع الإلكتروني والتجارة الإلكترونية، مع استهداف وصول المعاملات الرقمية إلى 80% من إجمالي المعاملات المالية.",
+        "en": "Develop electronic payments and e-commerce with a target for digital transactions to reach 80% of total financial transactions."
+       }
+      },
+      {
+       "id": 7,
+       "title": {
+        "ar": "تطوير رأس المال البشري الرقمي",
+        "en": "Develop digital human capital"
+       },
+       "text": {
+        "ar": "تدريب وتأهيل موظفي القطاع العام على المهارات الرقمية الأساسية والمتقدمة، مع استهداف تدريب 70% من موظفي القطاع العام بحلول 2028 وضمان تكافؤ فرص التدريب.",
+        "en": "Train public-sector employees in basic and advanced digital skills, targeting 70% of public-sector employees by 2028."
+       }
+      },
+      {
+       "id": 8,
+       "title": {
+        "ar": "اعتماد إطار وطني للمهارات الرقمية",
+        "en": "Adopt a national digital skills framework"
+       },
+       "text": {
+        "ar": "تحديد معايير واضحة للمهارات والكفاءات الرقمية المطلوبة للوظائف، والاستفادة من الأطر الدولية مثل DigComp في قياس وتطوير المهارات الرقمية.",
+        "en": "Define clear digital skills and competency standards and benefit from international frameworks such as DigComp."
+       }
+      },
+      {
+       "id": 9,
+       "title": {
+        "ar": "دعم الابتكار وريادة الأعمال الرقمية",
+        "en": "Support digital innovation and entrepreneurship"
+       },
+       "text": {
+        "ar": "خلق بيئة داعمة للشركات الناشئة، وتوفير الحوافز والتمويل، مع استهداف دعم إنشاء 500 شركة ناشئة رقمية بحلول عام 2030.",
+        "en": "Create a supportive startup environment with incentives and financing, targeting support for 500 digital startups by 2030."
+       }
+      },
+      {
+       "id": 10,
+       "title": {
+        "ar": "تحسين ترتيب العراق في المؤشرات الرقمية الدولية",
+        "en": "Improve Iraq’s position in international digital indicators"
+       },
+       "text": {
+        "ar": "العمل على تحسين جاهزية العراق الرقمية والوصول إلى موقع ضمن أفضل 100 دولة في مؤشرات الجاهزية الرقمية العالمية.",
+        "en": "Improve digital readiness and reach the top 100 countries in global digital-readiness indicators."
+       }
+      },
+      {
+       "id": 11,
+       "title": {
+        "ar": "اعتماد مؤشرات أداء واضحة KPIs",
+        "en": "Adopt clear KPIs"
+       },
+       "text": {
+        "ar": "وضع مؤشرات أداء وطنية قابلة للقياس لمتابعة تنفيذ برامج الاقتصاد والتحول الرقمي وقياس مدى التقدم بصورة دورية.",
+        "en": "Establish measurable national performance indicators to track digital-economy and digital-transformation programs."
+       }
+      },
+      {
+       "id": 12,
+       "title": {
+        "ar": "المتابعة والتقييم السنوي",
+        "en": "Annual follow-up and evaluation"
+       },
+       "text": {
+        "ar": "استمرار انعقاد منتدى الاقتصاد الرقمي العراقي سنوياً لمراجعة مستوى تنفيذ التوصيات وتقييم الاحتياجات والتحديات الجديدة وتحديث الأولويات.",
+        "en": "Continue holding the forum annually to review implementation, assess new needs and challenges, and update priorities."
+       }
+      },
+      {
+       "id": 13,
+       "title": {
+        "ar": "بناء القدرات الوطنية في الذكاء الاصطناعي",
+        "en": "Build national AI capabilities"
+       },
+       "text": {
+        "ar": "إنشاء مركز وطني متخصص في التدريب والتطوير في مجال الذكاء الاصطناعي، يقدم برامج بمستويات مختلفة ويرتبط بشهادات ومعايير دولية ومؤشرات أداء واضحة.",
+        "en": "Establish a national AI training and development center with multiple program levels, international standards and measurable KPIs."
+       }
+      },
+      {
+       "id": 14,
+       "title": {
+        "ar": "وضع خارطة طريق وطنية للمدن الذكية",
+        "en": "Create a national smart-cities roadmap"
+       },
+       "text": {
+        "ar": "إعداد خارطة طريق لتطوير المدن الذكية في العراق وفق معايير ITU والمعايير الدولية، وربطها بالنقل والطاقة والمياه والخدمات والبنية التحتية، وبهدف التنمية المستدامة SDG 11.",
+        "en": "Develop an Iraq smart-cities roadmap based on ITU and international standards, connected to transport, energy, water, services and infrastructure, aligned with SDG 11."
+       }
+      },
+      {
+       "id": 15,
+       "title": {
+        "ar": "إنشاء مرجعية علمية متخصصة للاقتصاد الرقمي",
+        "en": "Create a specialized scientific reference for the digital economy"
+       },
+       "text": {
+        "ar": "تأسيس جمعية علمية متخصصة في الاقتصاد الرقمي تسهم في البحث والتطوير، ورصد الفجوات، وتطوير السياسات والاستراتيجيات، وبناء القدرات والشراكات المحلية والدولية.",
+        "en": "Establish a scientific association for the digital economy to support research, identify gaps, develop policies and strategies, and build local and international partnerships."
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "eyebrow": {
+    "ar": "النسخة الثانية",
+    "en": "Second Edition"
+   },
+   "title": {
+    "ar": "من بناء الأسس الرقمية إلى بناء المنظومة الوطنية للاقتصاد الرقمي",
+    "en": "From building digital foundations to building a national digital-economy ecosystem"
+   },
+   "intro": {
+    "ar": "انتقلت النسخة الثانية من الحديث العام عن التحول الرقمي إلى ثلاثة ملفات أكثر تحديداً: التشريع والتنظيم، البنية التحتية والقطاع المالي، ورأس المال البشري.",
+    "en": "The second edition moved from general digital transformation to three more specific areas: legislation and regulation, digital infrastructure and the financial sector, and human capital."
+   },
+   "groups": [
+    {
+     "title": {
+      "ar": "أولاً: الإطار التشريعي والتنظيمي للاقتصاد الرقمي",
+      "en": "First: Legislative and regulatory framework"
+     },
+     "items": [
+      {
+       "id": 1,
+       "title": {
+        "ar": "إعداد إطار تشريعي وطني متكامل للاقتصاد الرقمي",
+        "en": "Prepare an integrated national legislative framework for the digital economy"
+       },
+       "text": {
+        "ar": "مراجعة وتحديث التشريعات العراقية ذات الصلة بالتحول الرقمي، وتحديد الفجوات التشريعية التي تعيق نمو الاقتصاد الرقمي.",
+        "en": "Review and update Iraqi legislation related to digital transformation and identify legislative gaps that hinder growth."
+       }
+      },
+      {
+       "id": 2,
+       "title": {
+        "ar": "إعطاء الأولوية للتشريعات الرقمية الأساسية",
+        "en": "Prioritize essential digital legislation"
+       },
+       "text": {
+        "ar": "خصوصاً التشريعات المتعلقة بحماية البيانات والخصوصية، المعاملات والتوقيع الإلكتروني، التجارة الإلكترونية، الأمن السيبراني، المدفوعات والخدمات المالية الرقمية، تبادل البيانات بين المؤسسات الحكومية، والتقنيات والأنشطة الاقتصادية الرقمية الناشئة.",
+        "en": "Prioritize data protection and privacy, e-transactions and e-signatures, e-commerce, cybersecurity, digital payments, government data exchange, and emerging digital economic activities."
+       }
+      },
+      {
+       "id": 3,
+       "title": {
+        "ar": "تطوير السياسات الرقمية استناداً إلى المعايير الدولية",
+        "en": "Develop digital policies based on international standards"
+       },
+       "text": {
+        "ar": "الاستفادة من المعايير والممارسات الدولية عند صياغة التشريعات والسياسات الرقمية العراقية، خصوصاً مع مشاركة الجهات الدولية المتخصصة.",
+        "en": "Use international standards and practices when drafting Iraqi digital legislation and policy."
+       }
+      },
+      {
+       "id": 4,
+       "title": {
+        "ar": "تعزيز التنسيق المؤسسي في ملف التحول الرقمي",
+        "en": "Strengthen institutional coordination"
+       },
+       "text": {
+        "ar": "إنشاء آلية وطنية للتنسيق بين الوزارات والهيئات والمؤسسات الحكومية والقطاع الخاص لضمان عدم تضارب السياسات والمشروعات الرقمية.",
+        "en": "Create a national coordination mechanism among ministries, agencies, public institutions and the private sector to avoid conflicting digital policies and projects."
+       }
+      },
+      {
+       "id": 5,
+       "title": {
+        "ar": "اعتماد مبدأ «الثقة الرقمية» كعنصر أساسي للاقتصاد الرقمي",
+        "en": "Adopt digital trust as a core principle"
+       },
+       "text": {
+        "ar": "بما يشمل حماية المستخدم، وحماية البيانات، والأمن السيبراني، وموثوقية المعاملات الرقمية.",
+        "en": "Include user protection, data protection, cybersecurity and trusted digital transactions."
+       }
+      }
+     ]
+    },
+    {
+     "title": {
+      "ar": "ثانياً: البنية التحتية الرقمية والقطاع المالي",
+      "en": "Second: Digital infrastructure and financial sector"
+     },
+     "items": [
+      {
+       "id": 6,
+       "title": {
+        "ar": "اعتبار البنية التحتية الرقمية بنية تحتية اقتصادية وطنية",
+        "en": "Treat digital infrastructure as national economic infrastructure"
+       },
+       "text": {
+        "ar": "وضمان استمرار الاستثمار في شبكات الاتصالات، ومراكز البيانات، والحوسبة السحابية، والمنصات الرقمية، وربطها باحتياجات القطاعات الاقتصادية.",
+        "en": "Sustain investment in telecommunications networks, data centers, cloud computing and digital platforms and connect them to sector needs."
+       }
+      },
+      {
+       "id": 7,
+       "title": {
+        "ar": "تسريع التحول نحو اقتصاد أقل اعتماداً على النقد",
+        "en": "Accelerate the shift toward a less cash-dependent economy"
+       },
+       "text": {
+        "ar": "التوسع في وسائل الدفع الإلكتروني والمدفوعات الرقمية والخدمات المصرفية الإلكترونية، مع تشجيع المواطنين والشركات على استخدامها.",
+        "en": "Expand electronic payments, digital payments and electronic banking services and encourage adoption by citizens and companies."
+       }
+      },
+      {
+       "id": 8,
+       "title": {
+        "ar": "تعزيز الشمول المالي الرقمي",
+        "en": "Strengthen digital financial inclusion"
+       },
+       "text": {
+        "ar": "توسيع وصول الأفراد والشركات، ولا سيما المشاريع الصغيرة والمتوسطة، إلى الخدمات المصرفية والمالية الرقمية.",
+        "en": "Expand access for individuals and companies, especially SMEs, to digital banking and financial services."
+       }
+      },
+      {
+       "id": 9,
+       "title": {
+        "ar": "تعزيز الربط بين التكنولوجيا المالية FinTech والنظام المصرفي",
+        "en": "Connect FinTech with the banking system"
+       },
+       "text": {
+        "ar": "توفير بيئة تنظيمية واستثمارية تسمح بنمو شركات التكنولوجيا المالية والابتكار في المدفوعات والخدمات المالية.",
+        "en": "Provide a regulatory and investment environment that enables growth and innovation in payments and financial services."
+       }
+      },
+      {
+       "id": 10,
+       "title": {
+        "ar": "تشجيع الاستثمارات في البنية التحتية والتكنولوجيا الرقمية",
+        "en": "Encourage investment in digital infrastructure and technology"
+       },
+       "text": {
+        "ar": "تطوير نماذج شراكة وتمويل تجمع الحكومة والقطاع الخاص والمؤسسات المالية والتنموية الدولية لدعم المشروعات الرقمية الكبرى.",
+        "en": "Develop partnership and financing models combining government, private sector, financial institutions and international development institutions."
+       }
+      },
+      {
+       "id": 11,
+       "title": {
+        "ar": "تطوير بيئة جاذبة للاستثمار الرقمي الدولي",
+        "en": "Develop an attractive environment for international digital investment"
+       },
+       "text": {
+        "ar": "من خلال وضوح السياسات والتشريعات، وحماية الاستثمار، وتوفير البنية التحتية والمهارات اللازمة لدخول الشركات والتكنولوجيا العالمية إلى السوق العراقية.",
+        "en": "Provide clear policies and legislation, investment protection, infrastructure and skills needed for international companies and technologies to enter Iraq."
+       }
+      }
+     ]
+    },
+    {
+     "title": {
+      "ar": "ثالثاً: رأس المال البشري والمهارات الرقمية",
+      "en": "Third: Human capital and digital skills"
+     },
+     "items": [
+      {
+       "id": 12,
+       "title": {
+        "ar": "إعداد استراتيجية وطنية لتنمية رأس المال البشري الرقمي",
+        "en": "Prepare a national digital human-capital strategy"
+       },
+       "text": {
+        "ar": "ربط التعليم والتدريب بالاحتياجات الفعلية للاقتصاد الرقمي وسوق العمل العراقي.",
+        "en": "Connect education and training with the real needs of Iraq’s digital economy and labor market."
+       }
+      },
+      {
+       "id": 13,
+       "title": {
+        "ar": "إعداد إطار وطني للمهارات الرقمية",
+        "en": "Prepare a national digital-skills framework"
+       },
+       "text": {
+        "ar": "تحديد مستويات واضحة للمهارات الرقمية المطلوبة من الموظف الحكومي، والقطاع الخاص، والطلبة والخريجين، ورواد الأعمال، والقيادات الإدارية.",
+        "en": "Define required digital skill levels for public employees, private sector, students, graduates, entrepreneurs and administrative leaders."
+       }
+      },
+      {
+       "id": 14,
+       "title": {
+        "ar": "بناء شراكات بين الجامعات والقطاع الخاص والمؤسسات الدولية",
+        "en": "Build partnerships among universities, private sector and international institutions"
+       },
+       "text": {
+        "ar": "لتطوير المناهج وبرامج التدريب والشهادات المهنية بما يتوافق مع المتطلبات الحديثة لسوق العمل.",
+        "en": "Develop curricula, training programs and professional certifications aligned with modern labor-market requirements."
+       }
+      },
+      {
+       "id": 15,
+       "title": {
+        "ar": "إطلاق برامج وطنية للتدريب والشهادات الرقمية المعتمدة",
+        "en": "Launch national accredited digital training and certification programs"
+       },
+       "text": {
+        "ar": "بالاستفادة من المؤسسات الدولية وشركات التكنولوجيا والمنظمات التي شاركت في المنتدى.",
+        "en": "Benefit from international institutions, technology companies and organizations that participated in the forum."
+       }
+      },
+      {
+       "id": 16,
+       "title": {
+        "ar": "التركيز على مهارات المستقبل",
+        "en": "Focus on future skills"
+       },
+       "text": {
+        "ar": "الذكاء الاصطناعي، تحليل البيانات، الأمن السيبراني، الحوسبة السحابية، التجارة الإلكترونية، التكنولوجيا المالية، وإدارة الأعمال الرقمية.",
+        "en": "Artificial intelligence, data analysis, cybersecurity, cloud computing, e-commerce, financial technology and digital business management."
+       }
+      },
+      {
+       "id": 17,
+       "title": {
+        "ar": "تحويل المهارات الرقمية إلى فرص عمل حقيقية",
+        "en": "Turn digital skills into real job opportunities"
+       },
+       "text": {
+        "ar": "ربط برامج التدريب بالتوظيف وريادة الأعمال والشركات الناشئة بدل اقتصارها على التدريب النظري.",
+        "en": "Link training to employment, entrepreneurship and startups instead of limiting it to theoretical training."
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

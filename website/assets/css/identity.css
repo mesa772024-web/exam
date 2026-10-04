@@ -1,0 +1,57 @@
+/* Apply .iscf-identity to the region that should use the forum identity. */
+.iscf-identity {
+  --iscf-navy: #26265E;
+  --iscf-blue: #0F6396;
+  --iscf-mid: #4B8AB0;
+  --iscf-light: #87B1CA;
+  --iscf-cyan: #2EA3DB;
+  --iscf-pixel-blue: #CEE5FA;
+  --iscf-pixel-ice: #CFEDFF;
+  --iscf-pixel-mist: #E8EEFB;
+  --iscf-paper: #FFFFFF;
+  --iscf-ink: #000000;
+  --iscf-line-height: 1.7;
+  color: var(--iscf-ink);
+  background-color: var(--iscf-paper);
+  font-family: "Tajawal", "Cairo", "Noto Sans Arabic", Arial, sans-serif;
+  line-height: var(--iscf-line-height);
+  text-align: start;
+}
+
+.iscf-identity .iscf-marked {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.4em;
+  line-height: var(--iscf-line-height);
+}
+
+.iscf-identity .iscf-digital-mark {
+  display: block;
+  flex: 0 0 auto;
+  width: 2.285714em;
+  height: 0.64em;
+  margin-block-start: calc((var(--iscf-line-height) - 0.64) * 0.5em);
+}
+
+.iscf-identity .iscf-marked-text {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.iscf-identity .iscf-name {
+  margin: 0 0 0.15em;
+  color: var(--iscf-blue);
+  font-size: 1.1em;
+  font-weight: 700;
+}
+
+.iscf-identity .iscf-role {
+  margin: 0;
+  color: var(--iscf-ink);
+}
+
+.iscf-identity .iscf-highlight {
+  color: var(--iscf-navy);
+  font-weight: 700;
+}

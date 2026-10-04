@@ -1,0 +1,15 @@
+# منع تنفيذ أي سكربت داخل مجلد الرفع
+# محاط بـ IfModule لتفادي خطأ 500 على خوادم LiteSpeed/PHP-FPM
+<IfModule mod_php7.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_mime.c>
+  RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .phps
+  RemoveType .php .phtml .php3 .php4 .php5 .php7 .phps
+</IfModule>
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|phps|cgi|pl|py|sh|asp|aspx)$">
+  Require all denied
+</FilesMatch>
