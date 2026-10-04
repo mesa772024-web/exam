@@ -6,7 +6,8 @@ from pathlib import Path
 from PIL import Image
 
 import spec
-from spec import W, H, S, C, COLORS, FONT_STYLES, Rect, Line, Poly, Img, Text
+import fonts
+from spec import W, H, S, C, COLORS, FONT_STYLES, Rect, Line, Poly, Img, Text, Ellipse, Multi
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
@@ -35,30 +36,23 @@ def col(name):
     return "#" + COLORS[name]
 
 
-TTF = {
-    ("Readex Pro", 300): "ReadexPro_300Light", ("Readex Pro", 400): "ReadexPro_400Regular",
-    ("Readex Pro", 500): "ReadexPro_500Medium", ("Readex Pro", 600): "ReadexPro_600SemiBold",
-    ("Readex Pro", 700): "ReadexPro_700Bold",
-    ("IBM Plex Sans Arabic", 300): "IBMPlexSansArabic_300Light",
-    ("IBM Plex Sans Arabic", 400): "IBMPlexSansArabic_400Regular",
-    ("IBM Plex Sans Arabic", 500): "IBMPlexSansArabic_500Medium",
-    ("IBM Plex Sans Arabic", 600): "IBMPlexSansArabic_600SemiBold",
-    ("IBM Plex Sans Arabic", 700): "IBMPlexSansArabic_700Bold",
-    ("Amiri", 400): "Amiri_400Regular", ("Amiri", 700): "Amiri_700Bold",
-    ("DM Serif Display", 400): "DMSerifDisplay_400Regular",
-    ("DM Serif Display", 400, "italic"): "DMSerifDisplay_400Regular_Italic",
-    ("Noto Sans Symbols 2", 400): "NotoSansSymbols2_400Regular",
-}
+def used_faces():
+    """Every (family, style) the spec uses."""
+    faces = {(st.family, st.style) for st in S.values()}
+    faces |= {(d["family"], d["style"]) for d in C.values() if "family" in d}
+    return sorted(faces)
 
 
 def font_faces():
-    """The same Google Fonts TTFs the designer installs for InDesign."""
+    """@font-face rules pointing at the exact font files InDesign will use."""
     css = []
-    for key, fn in TTF.items():
-        fam, wgt = key[0], key[1]
-        st = key[2] if len(key) > 2 else "normal"
-        css.append(f"@font-face{{font-family:'{fam}';font-style:{st};font-weight:{wgt};"
-                   f"src:url('fonts-ttf/{fn}.ttf') format('truetype');}}")
+    for fam, sty in used_faces():
+        path, used = fonts.resolve(fam, sty)
+        if used != fam:
+            print(f"  PREVIEW: {fam} {sty} stands in as {used}")
+        wgt, ital = FONT_STYLES[sty]
+        css.append(f"@font-face{{font-family:'{fam}';font-style:{'italic' if ital else 'normal'};"
+                   f"font-weight:{wgt};src:url('{path.as_uri()}');}}")
     return "\n".join(css)
 
 
@@ -127,6 +121,17 @@ def render_item(it, page_no, tid):
         fill = col(it.fill) if it.fill else "none"
         stroke = f'stroke="{col(it.stroke)}" stroke-width="{it.sw}"' if it.stroke else ""
         return f'<svg class="vec" viewBox="0 0 {W} {H}"><polygon points="{pts}" fill="{fill}" {stroke}/></svg>'
+    if isinstance(it, Ellipse):
+        css = [f"left:{it.x}pt", f"top:{it.y}pt", f"width:{it.w}pt", f"height:{it.h}pt", "border-radius:50%"]
+        if it.fill:
+            css.append(f"background:{col(it.fill)}")
+        if it.stroke:
+            css.append(f"border:{it.sw}pt solid {col(it.stroke)}")
+        return f'<div class="box" style="{";".join(css)}"></div>'
+    if isinstance(it, Multi):
+        d = " ".join("M" + " L".join(f"{x:.2f},{y:.2f}" for x, y in p) + " Z" for p in it.paths)
+        return (f'<svg class="vec" viewBox="0 0 {W} {H}"><path d="{d}" fill="none" '
+                f'stroke="{col(it.stroke)}" stroke-width="{it.sw}" stroke-linejoin="miter"/></svg>')
     if isinstance(it, Img):
         s, tx, ty, iw, ih = place(it)
         rad = "border-radius:50%;" if it.oval else ""

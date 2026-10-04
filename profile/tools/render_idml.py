@@ -16,7 +16,7 @@ from pathlib import Path
 from xml.sax.saxutils import escape, quoteattr
 
 import spec
-from spec import W, H, BLEED, S, C, COLORS, Rect, Line, Poly, Img, Text
+from spec import W, H, BLEED, S, C, COLORS, Rect, Line, Poly, Img, Text, Ellipse, Multi
 from render_html import place
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -115,6 +115,27 @@ def poly_xml(p):
             f'FillColor="{swatch(p.fill)}" {stroke}>{path_xml(pts)}</Polygon>')
 
 
+def ellipse_xml(e):
+    pts, curves = oval_pts(e.x, e.y, e.w, e.h)
+    stroke = (f'StrokeColor="{swatch(e.stroke)}" StrokeWeight="{f(e.sw)}" StrokeAlignment="InsideAlignment"'
+              if e.stroke else 'StrokeColor="Swatch/None" StrokeWeight="0"')
+    return (f'<Oval Self="{uid()}" ContentType="Unassigned" {common(e.name)} FillColor="{swatch(e.fill)}" '
+            f'{stroke}>{path_xml(pts, curves=curves)}</Oval>')
+
+
+def multi_xml(m):
+    """One compound path: every closed sub-path is its own GeometryPathType."""
+    subs = []
+    for p in m.paths:
+        pts = "".join(
+            f'<PathPointType Anchor="{f(x)} {f(y)}" LeftDirection="{f(x)} {f(y)}" RightDirection="{f(x)} {f(y)}"/>'
+            for x, y in (to_spread(px, py) for px, py in p))
+        subs.append(f'<GeometryPathType PathOpen="false"><PathPointArray>{pts}</PathPointArray></GeometryPathType>')
+    return (f'<Polygon Self="{uid()}" ContentType="Unassigned" {common(m.name)} FillColor="Swatch/None" '
+            f'StrokeColor="{swatch(m.stroke)}" StrokeWeight="{f(m.sw)}">'
+            f'<Properties><PathGeometry>{"".join(subs)}</PathGeometry></Properties></Polygon>')
+
+
 def img_xml(im):
     s, tx, ty, iw, ih = place(im)
     tx, ty = to_spread(tx, ty)
@@ -203,6 +224,10 @@ def item_xml(it, stories):
         return poly_xml(it)
     if isinstance(it, Img):
         return img_xml(it)
+    if isinstance(it, Ellipse):
+        return ellipse_xml(it)
+    if isinstance(it, Multi):
+        return multi_xml(it)
     if isinstance(it, Text):
         return text_xml(it, stories)
     raise TypeError(it)

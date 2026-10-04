@@ -22,12 +22,21 @@ def run(script, *args):
 def main():
     if not (BUILD / "fonts-ttf").exists():
         subprocess.run(["bash", str(HERE / "fetch_fonts.sh")], check=True)
+    sys.path.insert(0, str(HERE))
+    import fonts
+    missing = [f for f in ("Thmanyah Serif Display", "Thmanyah Sans") if not fonts.has_family(f)]
+    if missing and not fonts.PREVIEW:
+        sys.exit("Thmanyah is not installed: put the official font files (font.thmanyah.com) in "
+                 "src/fonts-private/, or run with PROFILE_PREVIEW=1 for a layout preview.")
     run("prep_images.py")
     run("verify_text.py")
     run("check_glyphs.py")
     run("render_html.py")
     run("render_idml.py")
 
+    if fonts.PREVIEW:
+        print("preview build: build/profile.pdf and build/profile.idml (dist/ left untouched)")
+        return
     DIST.mkdir(exist_ok=True)
     shutil.copy(BUILD / "profile.pdf", DIST / f"{NAME}.pdf")
 

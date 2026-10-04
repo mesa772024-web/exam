@@ -87,7 +87,6 @@ def main():
     circle("image14.png", "cat-4-academic.jpg")
     circle("image15.png", "cat-5-civil.jpg")
     copy("image6.png", "baghdad-thumb.png")
-    copy("image5.png", "forum-mark.png")
     copy("image17.png", "logo-ministry-of-trade.png")
     copy("image18.png", "logo-ficc.png")
     copy("image19.png", "logo-icc-iraq.png")

@@ -1,2 +1,4 @@
 profile/build/
 __pycache__/
+# Thmanyah licence forbids redistributing the font files
+profile/src/fonts-private/

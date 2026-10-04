@@ -8,6 +8,8 @@ Word file; tools/verify_text.py checks that nothing was added or changed.
 from dataclasses import dataclass, field
 import math
 
+import fonts
+
 W = 841.8897637795276   # A4 landscape
 H = 595.2755905511812
 BLEED = 8.503937007874017  # 3 mm
@@ -27,24 +29,36 @@ COLORS = {
     "Muted":     "5C7064",
     "Line":      "E3D9BF",  # hairlines on white
     "DeepLine":  "1F4A3B",  # hairlines on deep green
-    "DeepStar":  "0D3226",  # star ornament on deep green
-    "CreamStar": "EADFC6",  # star ornament on cream
     "White":     "FFFFFF",
 }
 
+
+def _mix(a, b, t):
+    pa = [int(a[i:i + 2], 16) for i in (0, 2, 4)]
+    pb = [int(b[i:i + 2], 16) for i in (0, 2, 4)]
+    return "".join(f"{round(x + (y - x) * t):02X}" for x, y in zip(pa, pb))
+
+
+# Light lattice pattern: four fade steps from the paper colour toward a line colour.
+PATTERN = {
+    "White": ("FFFFFF", "DCCFAF"),
+    "Cream": ("F8F3E8", "E0D2AE"),
+    "Deep":  ("06241B", "1E5240"),
+}
+for _bg, (_a, _b) in PATTERN.items():
+    for _k in range(1, 5):
+        COLORS[f"Pattern {_bg} {_k}"] = _mix(_a, _b, _k / 4)
+
 # ------------------------------------------------------------------ fonts --
-# (family, InDesign style) -> CSS weight / italic
+DISPLAY = "Thmanyah Serif Display"   # headlines, figures
+SANS = "Thmanyah Sans"               # labels, sub-heads, UI text
+TEXT = "IBM Plex Sans Arabic"        # running text and English lines
+
+# InDesign style name -> CSS weight / italic
 FONT_STYLES = {
     "Light": (300, False), "Regular": (400, False), "Medium": (500, False),
-    "SemiBold": (600, False), "Bold": (700, False), "Italic": (400, True),
-}
-# hhea ascent / descent per em (identical to OS/2 typo metrics in these fonts)
-FONT_METRICS = {
-    "Amiri": (1.124, 0.634),
-    "Readex Pro": (1.000, 0.250),
-    "IBM Plex Sans Arabic": (1.085, 0.415),
-    "DM Serif Display": (1.036, 0.335),
-    "Noto Sans Symbols 2": (1.069, 0.630),
+    "SemiBold": (600, False), "Bold": (700, False), "Black": (900, False),
+    "Italic": (400, True),
 }
 
 
@@ -68,7 +82,7 @@ class PStyle:
     @property
     def delta(self):
         """Distance from line-box centre to baseline in CSS layout."""
-        a, d = FONT_METRICS[self.family]
+        a, d = fonts.metrics(self.family)
         return (a - d) / 2 * self.size
 
 
@@ -82,66 +96,68 @@ def ps(*args, **kw):
 
 
 # running elements
-ps("Running Head", "Readex Pro", "Medium", 8.5, 12, "Deep")
-ps("Folio", "DM Serif Display", "Regular", 11, 13, "Gold", align="left", rtl=False)
+ps("Running Head", SANS, "Medium", 8.5, 12, "Deep")
+ps("Folio", TEXT, "Medium", 9, 12, "GoldDark", align="left", rtl=False)
 # section openers
-ps("Kicker", "Readex Pro", "Medium", 10, 14, "GoldDark")
-ps("Kicker Centre", "Readex Pro", "Medium", 10, 14, "GoldDark", align="center")
-ps("Section Title", "Amiri", "Bold", 36, 48, "Deep")
-ps("Section Title Centre", "Amiri", "Bold", 36, 48, "Deep", align="center")
-ps("Body", "IBM Plex Sans Arabic", "Regular", 12, 22.5, "Ink", align="justify")
-ps("Intro", "Readex Pro", "Medium", 12, 20.5, "Deep")
-ps("Sub Head", "Readex Pro", "SemiBold", 15, 20, "Deep")
+ps("Kicker", SANS, "Bold", 9.5, 13, "GoldDark")
+ps("Kicker Centre", SANS, "Bold", 9.5, 13, "GoldDark", align="center")
+ps("Section Title", DISPLAY, "Bold", 34, 46, "Deep")
+ps("Section Title Centre", DISPLAY, "Bold", 34, 46, "Deep", align="center")
+ps("Body", TEXT, "Regular", 12, 22.5, "Ink", align="justify")
+ps("Intro", SANS, "Medium", 13, 22, "Deep")
+ps("Sub Head", SANS, "Bold", 14, 20, "Deep")
 # figures
-ps("Stat Number", "Amiri", "Bold", 34, 40, "Gold", align="center")
-ps("Stat Label", "Readex Pro", "Medium", 10, 14, "Deep", align="center")
+ps("Stat Number", DISPLAY, "Bold", 36, 42, "Gold", align="center")
+ps("Stat Label", SANS, "Medium", 10, 14, "Deep", align="center")
 # cards
-ps("Card Number", "Amiri", "Bold", 25, 28, "Gold")
-ps("Card Number Centre", "Amiri", "Bold", 26, 30, "Gold", align="center")
-ps("Card Title", "Readex Pro", "SemiBold", 13.5, 19, "Deep")
-ps("Card Title Centre", "Readex Pro", "SemiBold", 13, 18, "Deep", align="center")
-ps("Card Text", "IBM Plex Sans Arabic", "Regular", 10, 17, "Ink")
-ps("Label", "Readex Pro", "Medium", 9, 13, "GoldDark")
-ps("Label On Deep", "Readex Pro", "Medium", 9, 13, "GoldLight")
-ps("List Centre", "IBM Plex Sans Arabic", "Regular", 10.5, 17, "Ink", align="center",
+ps("Card Number", DISPLAY, "Bold", 26, 30, "Gold")
+ps("Card Number Centre", DISPLAY, "Bold", 26, 30, "Gold", align="center")
+ps("Card Title", SANS, "Bold", 13.5, 19, "Deep")
+ps("Card Title Centre", SANS, "Bold", 13, 18, "Deep", align="center")
+ps("Card Text", TEXT, "Regular", 10, 17, "Ink")
+ps("Label", SANS, "Medium", 9, 13, "GoldDark")
+ps("Label On Deep", SANS, "Medium", 9, 13, "GoldLight")
+ps("List Centre", TEXT, "Regular", 10.5, 17, "Ink", align="center",
    pad_top=5.5, pad_bottom=5.5, rule_above=("Line", 0.6))
-ps("List", "IBM Plex Sans Arabic", "Regular", 10.5, 17, "Ink",
+ps("List", TEXT, "Regular", 10.5, 17, "Ink",
    pad_top=5.5, pad_bottom=5.5, rule_above=("Line", 0.6))
-ps("List On Deep", "IBM Plex Sans Arabic", "Regular", 10.5, 17, "Cream",
+ps("List On Deep", TEXT, "Regular", 10.5, 17, "Cream",
    pad_top=5.5, pad_bottom=5.5, rule_above=("DeepLine", 0.6))
-ps("Pill", "Readex Pro", "Medium", 10.5, 14, "Deep", align="center")
-ps("Tier Title", "Amiri", "Bold", 25, 34, "Deep")
-ps("Tier Title On Deep", "Amiri", "Bold", 25, 34, "Cream")
-ps("Note", "Readex Pro", "Medium", 10.5, 14, "Deep", align="center")
-ps("Logo Label", "Readex Pro", "Medium", 9, 13, "Deep", align="center")
-ps("Logo Label Latin", "Readex Pro", "Medium", 9, 13, "Deep", align="center", rtl=False)
-ps("Highlight Title", "Readex Pro", "SemiBold", 14.5, 21, "GoldLight")
-ps("Highlight Text", "IBM Plex Sans Arabic", "Regular", 10.5, 18, "Cream", align="justify")
-ps("Date Block", "Readex Pro", "SemiBold", 12, 16, "GoldLight")
+ps("Pill", SANS, "Medium", 10.5, 14, "Deep", align="center")
+ps("Tier Title", DISPLAY, "Bold", 24, 32, "Deep")
+ps("Tier Title On Deep", DISPLAY, "Bold", 24, 32, "Cream")
+ps("Note", SANS, "Medium", 10.5, 14, "Deep", align="center")
+ps("Logo Label", SANS, "Medium", 9, 13, "Deep", align="center")
+ps("Logo Label Latin", TEXT, "Medium", 9, 13, "Deep", align="center", rtl=False)
+ps("Highlight Title", SANS, "Bold", 14.5, 21, "GoldLight")
+ps("Highlight Text", TEXT, "Regular", 10.5, 18, "Cream", align="justify")
+ps("Date Block", SANS, "Bold", 12, 16, "GoldLight")
 # cover
-ps("Cover Year", "Readex Pro", "SemiBold", 9.5, 14, "GoldDark", align="center")
-ps("Cover Title", "Amiri", "Bold", 31, 44, "Deep")
-ps("Cover English", "DM Serif Display", "Italic", 15, 19, "Green", rtl=False, align="right")
-ps("Cover Theme", "Amiri", "Bold", 15, 22, "GoldDark")
-ps("Cover Theme English", "DM Serif Display", "Italic", 10.5, 14, "Green", rtl=False, align="right")
-ps("Cover Day", "Amiri", "Bold", 46, 52, "Gold", align="center")
-ps("Cover Date", "Readex Pro", "SemiBold", 12, 16, "Deep")
-ps("Cover Date Sub", "Readex Pro", "Regular", 9.5, 14, "Muted")
-ps("Caps Latin", "Readex Pro", "Regular", 6.5, 11, "GoldDark", rtl=False, align="right",
-   tracking=140, caps=True)
-ps("Caps Latin Centre", "Readex Pro", "Regular", 7, 12, "GoldLight", rtl=False, align="center",
-   tracking=200, caps=True)
-ps("Cover Label", "Readex Pro", "Medium", 9, 13, "GoldDark")
+ps("Cover Year", SANS, "Bold", 9.5, 14, "GoldDark", align="center")
+ps("Cover Title", DISPLAY, "Bold", 32, 44, "Deep")
+ps("Cover English", TEXT, "Light", 13, 18, "Green", rtl=False, align="right")
+ps("Cover Theme", DISPLAY, "Medium", 16, 24, "GoldDark")
+ps("Cover Theme English", TEXT, "Regular", 9.5, 13, "Green", rtl=False, align="right")
+ps("Cover Day", DISPLAY, "Bold", 48, 54, "Gold", align="center")
+ps("Cover Date", SANS, "Bold", 12, 16, "Deep")
+ps("Cover Date Sub", SANS, "Regular", 9.5, 14, "Muted")
+ps("Caps Latin", TEXT, "Medium", 6.5, 11, "GoldDark", rtl=False, align="right",
+   tracking=150, caps=True)
+ps("Caps Latin Centre", TEXT, "Medium", 7, 12, "GoldLight", rtl=False, align="center",
+   tracking=220, caps=True)
+ps("Cover Label", SANS, "Bold", 9, 13, "GoldDark")
 # back cover
-ps("Back Title", "Amiri", "Bold", 30, 42, "Cream", align="center")
-ps("Back English", "DM Serif Display", "Italic", 13, 18, "GoldLight", align="center", rtl=False)
-ps("Back Theme", "Amiri", "Bold", 25, 34, "GoldLight", align="center")
-ps("Back Theme English", "DM Serif Display", "Italic", 13, 18, "Cream", align="center", rtl=False)
-ps("Back Date", "Readex Pro", "Medium", 11, 16, "Cream", align="center")
+ps("Back Title", DISPLAY, "Bold", 30, 42, "Cream", align="center")
+ps("Back English", TEXT, "Light", 12, 17, "GoldLight", align="center", rtl=False)
+ps("Back Theme", DISPLAY, "Medium", 25, 34, "GoldLight", align="center")
+ps("Back Theme English", TEXT, "Light", 12, 17, "Cream", align="center", rtl=False)
+ps("Back Date", SANS, "Medium", 11, 16, "Cream", align="center")
 
 # character styles
 C = {
     "Gold Accent": {"color": "Gold"},
+    "Emphasis": {"family": TEXT, "style": "SemiBold", "color": "Deep"},
+    "Emphasis Gold": {"family": TEXT, "style": "SemiBold", "color": "GoldDark"},
     # U+25C6 is in none of the text fonts; Word/Chrome substituted it silently,
     # InDesign would show a missing glyph. Pin it to a free symbol font.
     "Ornament": {"family": "Noto Sans Symbols 2", "style": "Regular"},
@@ -187,6 +203,27 @@ class Poly:
     fill: str = None
     stroke: str = None
     sw: float = 0
+    name: str = ""
+
+
+@dataclass
+class Ellipse:
+    x: float
+    y: float
+    w: float
+    h: float
+    fill: str = None
+    stroke: str = None
+    sw: float = 0
+    name: str = ""
+
+
+@dataclass
+class Multi:
+    """Compound path of closed sub-paths (one object in InDesign)."""
+    paths: list
+    stroke: str = None
+    sw: float = 0.6
     name: str = ""
 
 
@@ -265,10 +302,50 @@ def framed_image(items, x, y, w, h, src, ax=0.5, ay=0.5, off=10):
     items.append(Img(x, y, w, h, src, ax=ax, ay=ay, name=src))
 
 
+def lattice(zone, bg, anchor, fade, s=44, sw=0.6, away=False, inside=False):
+    """Light eight-point-star lattice that fades with distance from `anchor`.
+
+    zone: (x0, y0, x1, y1) area to tile; stars may overrun it unless inside=True.
+    away=True makes the pattern strongest far from the anchor (keeps a centre clear).
+    Returns up to four compound paths, one per fade step.
+    """
+    x0, y0, x1, y1 = zone
+    r = s / 2
+    buckets = {1: [], 2: [], 3: [], 4: []}
+    ax, ay = anchor
+    nx, ny = int((x1 - x0) / s) + 2, int((y1 - y0) / s) + 2
+    for i in range(-1, nx):
+        for j in range(-1, ny):
+            cx, cy = x0 + i * s + s / 2, y0 + j * s + s / 2
+            if inside and not (cx - r >= x0 and cx + r <= x1 and cy - r >= y0 and cy + r <= y1):
+                continue
+            d = math.hypot(cx - ax, cy - ay)
+            t = (d - fade[0]) / fade[1] if away else 1 - d / fade
+            if t <= 0:
+                continue
+            buckets[min(4, math.ceil(t * 4))].append(star(cx, cy, r))
+    return [Multi(p, stroke=f"Pattern {bg} {k}", sw=sw, name=f"pattern {k}")
+            for k, p in buckets.items() if p]
+
+
+def node(items, cx, cy, ring=10, dot=4.5, bg="White"):
+    """Gold ringed dot - a step marker on a timeline or connector."""
+    items.append(Ellipse(cx - ring, cy - ring, 2 * ring, 2 * ring, fill=bg, stroke="Gold", sw=1.4, name="node ring"))
+    items.append(Ellipse(cx - dot, cy - dot, 2 * dot, 2 * dot, fill="Gold", name="node dot"))
+
+
+def badge(items, cx, cy, r, color="Gold", fill=None, sw=0.9):
+    """Octagram badge drawn from the pattern's own star (replaces the plant logo)."""
+    items.append(Poly(star(cx, cy, r), fill=fill, stroke=color, sw=sw, name="badge"))
+    items.append(Poly(star(cx, cy, r * 0.62), stroke=color, sw=sw * 0.7, name="badge inner"))
+    items.append(Poly(diamond(cx, cy, r * 0.16), fill=color, name="badge centre"))
+
+
 # ================================================================= PAGES ===
 def master_items():
     it = []
-    it.append(Img(R - 20, 23, 20, 22, "forum-mark.png", fit="contain", name="running mark"))
+    it += lattice((W - 330, -BLEED, W + BLEED, 230), "White", (W, 0), 330, s=40)
+    badge(it, R - 9, 34, 9)
     it.append(Text(R - 330, 28.5, 302, 14,
                    [P("Running Head", "منتدى المسؤولية الاجتماعية واستدامة الأعمال العراقي")],
                    name="running head"))
@@ -284,9 +361,8 @@ def page_cover():
     it = pg.items
     it.append(Img(-14, (H - 380) / 2 + 6, 444, 380, "cover-hands-flag.jpg", ax=0.5, name="cover photo"))
     zx, zw = 420, R - 420
-    it.append(Poly(star(R - 28, 66, 120), stroke="CreamStar", sw=0.75, name="star ornament"))
-    it.append(Poly(star(R - 28, 66, 84), stroke="CreamStar", sw=0.75, name="star ornament"))
-    it.append(Img(R - 56, 36, 56, 58, "forum-mark.png", fit="contain", name="forum mark"))
+    it[:0] = lattice((-BLEED, -BLEED, W + BLEED, H + BLEED), "Cream", (W, 0), 470, s=46)
+    badge(it, R - 28, 64, 26, fill="Cream")
     it.append(Text(R - 88, 96, 120, 14, [P("Cover Year", "بغداد ٢٠٢٦")], name="year"))
     it.append(Text(zx, 126, zw, 92, [
         P("Cover Title", "منتدى المسؤولية"),
@@ -339,8 +415,8 @@ def page_about():
     title_block(it, zx, zw, "◆  عن المنتدى", "نبذة عامة")
     framed_image(it, M, 68, 350, 462, "about-baghdad-tigris.jpg", ax=0.62)
     it.append(Text(zx, 164, zw, 290, [
-        P("Body", "يُعدّ\xa0منتدى المسؤولية الاجتماعية واستدامة الأعمال العراقي\xa0منصة وطنية بأبعاد دولية، تهدف إلى تعزيز دور القطاع الخاص العراقي كشريك فاعل في تحقيق التنمية المستدامة، من خلال ترسيخ مبادئ النزاهة والحوكمة وممارسات الأعمال المسؤولة، وتعزيز المسؤولية الاجتماعية والبيئية، وبناء شراكات مستدامة تسهم في رفع التنافسية وتحقيق أثر إيجابي على الاقتصاد والمجتمع والبيئة. كما يسعى المنتدى إلى الانتقال بالمسؤولية الاجتماعية من مبادرات متفرقة إلى برامج استراتيجية مستدامة ذات أثر قابل للقياس.", sa=9),
-        P("Body", "وسيجمع المنتدى القيادات الحكومية ومؤسسات القطاع الخاص والمنظمات الدولية والجامعات والخبراء وممثلي المجتمع المدني تحت سقف واحد، وسيُعقد في بغداد يوم الأحد، الأول من تشرين الثاني ٢٠٢٦، في إطار توجه يهدف إلى تعزيز التعاون بين مختلف القطاعات، ودعم ممارسات الاستدامة والحوكمة في مجتمع الأعمال العراقي."),
+        P("Body", "يُعدّ\xa0", ("منتدى المسؤولية الاجتماعية واستدامة الأعمال العراقي", "Emphasis"), "\xa0منصة وطنية بأبعاد دولية، تهدف إلى تعزيز دور القطاع الخاص العراقي كشريك فاعل في تحقيق التنمية المستدامة، من خلال ترسيخ مبادئ النزاهة والحوكمة وممارسات الأعمال المسؤولة، وتعزيز المسؤولية الاجتماعية والبيئية، وبناء شراكات مستدامة تسهم في رفع التنافسية وتحقيق أثر إيجابي على الاقتصاد والمجتمع والبيئة. كما يسعى المنتدى إلى الانتقال بالمسؤولية الاجتماعية من مبادرات متفرقة إلى برامج استراتيجية مستدامة ذات أثر قابل للقياس.", sa=9),
+        P("Body", "وسيجمع المنتدى القيادات الحكومية ومؤسسات القطاع الخاص والمنظمات الدولية والجامعات والخبراء وممثلي المجتمع المدني تحت سقف واحد، وسيُعقد في بغداد ", ("يوم الأحد، الأول من تشرين الثاني ٢٠٢٦", "Emphasis Gold"), "، في إطار توجه يهدف إلى تعزيز التعاون بين مختلف القطاعات، ودعم ممارسات الاستدامة والحوكمة في مجتمع الأعمال العراقي."),
     ], name="about body"))
     sy = 462
     it.append(Rect(zx, sy, zw, 78, fill="Cream", name="stats band"))
@@ -406,6 +482,7 @@ def page_participants():
     gap = 12
     cw = (R - M - 4 * gap) / 5
     cy, chh = 214, 312
+    it.append(Line(M + cw / 2, cy, R - cw / 2, cy, "Gold", 0.9, name="connector"))
     for i, (n, t, items, img) in enumerate(cats):
         x = R - (i + 1) * cw - i * gap
         it.append(Rect(x, cy, cw, chh, fill="White", stroke="GoldLight", sw=0.75, name="category card"))
@@ -431,23 +508,33 @@ def page_programme():
     it.append(Rect(M, 474, 246, 2, fill="Gold", name="date rule"))
     it.append(Text(M + 18, 494, 210, 16, [P("Date Block", "الأحد  ١ تشرين الثاني ٢٠٢٦")], name="date"))
 
-    it.append(Text(zx, 164, zw, 22, [P("Sub Head", "الجلسة الافتتاحية")], name="opening head"))
-    pills = ["كلمات الجهات المنظّمة", "كلمات الجهات الداعمة", "الكلمة الرئيسية"]
+    # The day's order as a timeline: opening -> dialogue sessions -> alliance launch.
+    tx = R - 11                 # timeline axis
+    cr = R - 34                 # content right edge
+    cw = cr - zx
     gap = 10
-    pw = (zw - 2 * gap) / 3
+    pw = (cw - 2 * gap) / 3
+    by, bh = 418, 112
+    steps = [175, 253, by + 25]
+    it.append(Line(tx, steps[0], tx, steps[-1], "Gold", 1.1, name="timeline"))
+    for y in steps:
+        node(it, tx, y)
+
+    it.append(Text(zx, 164, cw, 22, [P("Sub Head", "الجلسة الافتتاحية")], name="opening head"))
+    pills = ["كلمات الجهات المنظّمة", "كلمات الجهات الداعمة", "الكلمة الرئيسية"]
     for i, s in enumerate(pills):
-        x = R - (i + 1) * pw - i * gap
+        x = cr - (i + 1) * pw - i * gap
         it.append(Rect(x, 192, pw, 34, fill="Cream", stroke="GoldLight", sw=0.75, name="pill"))
         it.append(Text(x + 6, 202, pw - 12, 14, [P("Pill", s)], name="pill text"))
 
-    it.append(Text(zx, 242, zw, 22, [P("Sub Head", "الجلسات الحوارية")], name="sessions head"))
+    it.append(Text(zx, 242, cw, 22, [P("Sub Head", "الجلسات الحوارية")], name="sessions head"))
     sessions = [
         ("١", "الجلسة الأولى", "الجدوى الاقتصادية للنزاهة في عالم سريع التغيّر."),
         ("٢", "الجلسة الثانية", "من المبادئ إلى الممارسة – إدماج النزاهة والممارسات البيئية والاجتماعية والحوكمة في الأعمال."),
         ("٣", "الجلسة الثالثة", "من البيئة التمكينية إلى الأثر –  تعزيز الأعمال المستدامة والمسؤولية الاجتماعية للشركات في العراق."),
     ]
     for i, (n, lab, d) in enumerate(sessions):
-        x = R - (i + 1) * pw - i * gap
+        x = cr - (i + 1) * pw - i * gap
         it.append(Rect(x, 270, pw, 132, fill="White", stroke="GoldLight", sw=0.75, name="session card"))
         it.append(Rect(x, 270, pw, 2, fill="Gold", name="session rule"))
         it.append(Text(x + 13, 280, pw - 26, 118, [
@@ -456,12 +543,11 @@ def page_programme():
             P("Card Text", d, sb=3),
         ], name="session text"))
 
-    by, bh = 418, 112
-    it.append(Rect(zx, by, zw, bh, fill="Deep", name="alliance panel"))
-    it.append(Rect(zx, by, zw, 2, fill="Gold", name="alliance rule"))
-    it.append(Poly(star(zx + 52, by + bh / 2, 40), stroke="DeepLine", sw=0.75, name="alliance star"))
-    it.append(Img(zx + 26, by + bh / 2 - 27, 52, 54, "forum-mark.png", fit="contain", name="alliance mark"))
-    it.append(Text(zx + 104, by + 14, zw - 104 - 20, bh - 20, [
+    it.append(Rect(zx, by, cw, bh, fill="Deep", name="alliance panel"))
+    it.append(Rect(zx, by, cw, 2, fill="Gold", name="alliance rule"))
+    it += lattice((zx, by, zx + 120, by + bh), "Deep", (zx, by + bh), 150, s=28, inside=True)
+    badge(it, zx + 52, by + bh / 2, 30, fill="Deep")
+    it.append(Text(zx + 104, by + 14, cw - 104 - 20, bh - 20, [
         P("Highlight Title", "إطلاق التحالف الأخضر لنزاهة الأعمال"),
         P("Highlight Text", "الإطلاق الرسمي لمنصة تتيح للشركات العراقية ترجمة مبادئ المنتدى إلى التزامات مستدامة في مجالات النزاهة، والممارسات البيئية والاجتماعية والحوكمة.", sb=4),
     ], name="alliance text"))
@@ -561,10 +647,9 @@ def page_back():
     pg = Page("Back Cover", bg="Deep", master=False)
     it = pg.items
     cx = W / 2
-    for r in (330, 250, 170):
-        it.append(Poly(star(cx, 176, r), stroke="DeepStar", sw=1, name="star ornament"))
+    it += lattice((-BLEED, -BLEED, W + BLEED, H + BLEED), "Deep", (cx, 300), (230, 300), s=46, away=True)
     it.append(Rect(22, 22, W - 44, H - 44, stroke="Gold", sw=0.5, name="inner frame"))
-    it.append(Img(cx - 48, 124, 96, 100, "forum-mark.png", fit="contain", name="forum mark"))
+    badge(it, cx, 172, 44, fill="Deep", sw=1.1)
     it.append(Text(110, 242, W - 220, 230, [
         P("Back Title", "منتدى نزاهة الأعمال والمسؤولية الاجتماعية العراقي"),
         P("Back English", "The Iraqi Forum for Business Integrity and Social Responsibility", sb=2),

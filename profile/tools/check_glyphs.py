@@ -1,23 +1,16 @@
 """Fail if any character would hit a missing glyph in the font InDesign will use."""
 import sys
-from pathlib import Path
-
-from fontTools.ttLib import TTFont
-
+import fonts
 import spec
-from render_html import TTF
-from spec import S, C, FONT_STYLES
+from spec import S, C
 
-FONTS = Path(__file__).resolve().parents[1] / "build" / "fonts-ttf"
 _cm = {}
 
 
 def cmap(fam, style):
-    w, ital = FONT_STYLES[style]
-    fn = TTF[(fam, w, "italic") if ital else (fam, w)]
-    if fn not in _cm:
-        _cm[fn] = TTFont(FONTS / f"{fn}.ttf").getBestCmap()
-    return _cm[fn], fn
+    if (fam, style) not in _cm:
+        _cm[(fam, style)] = fonts.cmap(fam, style)
+    return _cm[(fam, style)], f"{fam} {style}"
 
 
 def main():
