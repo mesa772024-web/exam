@@ -15,3 +15,7 @@
   (إطار `btn`) ثم صدّر PDF بخيار Hyperlinks.
 - النص عربي RTL؛ إن ظهرت الحروف منفصلة اضبط Paragraph Composer على Adobe World-Ready Paragraph Composer.
 - الألوان RGB (Navy 0B2A55 / Gold CDA449) — حوّلها إلى CMYK عند الطباعة.
+
+## بطاقات الأسماء
+ضع الأسماء (اسم في كل سطر) في `src/names.txt` ثم `python3 build.py && node render.js` — تُنتج `named_cards/NN_الاسم.pdf`
+(سطر المخاطَبة يتحول إلى الاسم + سطر «يرجى تأكيد الحضور» في الأسفل).

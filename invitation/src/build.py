@@ -29,7 +29,7 @@ IVORY, WHITE = (245, 238, 220), (255, 255, 255)
 COLORS = {"Navy": NAVY, "Gold": GOLD, "GoldLight": GOLD_L, "Ivory": IVORY, "White": WHITE}
 hexc = lambda c: "#%02x%02x%02x" % c
 
-HEAD_H = 34.0                 # white header with the two logos
+HEAD_H = 32.0                 # white header with the two logos
 CX = W / 2
 
 # ----------------------------------------------------------------- shapes
@@ -51,28 +51,14 @@ def diamond(cx, cy, r, fill="Gold"):
 rect(-BLEED, HEAD_H, W + 2 * BLEED, H - HEAD_H + BLEED, fill="Navy")
 
 # frame geometry (inside the navy body)
-FX0, FX1, FY0, FY1 = 5.0, W - 5.0, HEAD_H + 4.6, H - 4.0
-
-# subtle 8-point-star lattice
-TX, TY, S = 21, 11, 8.8
-px0 = (W - TX * S) / 2
-py0 = (FY0 + FY1) / 2 - TY * S / 2
-R = 0.62 * S
-stars = []
-for i in range(TX):
-    for j in range(TY):
-        cx, cy = px0 + (i + .5) * S, py0 + (j + .5) * S
-        q = R * 0.70711
-        stars.append([(cx - q, cy - q), (cx + q, cy - q), (cx + q, cy + q), (cx - q, cy + q)])
-        stars.append([(cx, cy - R), (cx + R, cy), (cx, cy + R), (cx - R, cy)])
-poly(stars, stroke="Gold", sw=0.4, op=10)
+FX0, FX1, FY0, FY1 = 5.0, W - 5.0, HEAD_H + 4.4, H - 3.2
 
 # double gold frame
 rect(FX0, FY0, FX1 - FX0, FY1 - FY0, stroke="Gold", sw=0.9)
 rect(FX0 + 1.3, FY0 + 1.3, FX1 - FX0 - 2.6, FY1 - FY0 - 2.6, stroke="Gold", sw=0.35)
 
 # header: two logos side by side
-LOGO_S = 30.0
+LOGO_S = 28.0
 IUSBC_BOX = (CX + 4.0, 2.0, LOGO_S)       # council logo, on the right (RTL start)
 FICC_BOX = (CX - 4.0 - LOGO_S, 2.0, LOGO_S)
 HLY = 17.0
@@ -82,7 +68,7 @@ line(CX, 6, CX, HEAD_H - 6, sw=0.5)
 
 # info row : date | time | place(+button) | QR
 IX0, IX1 = FX0 + 10, FX1 - 10
-IT, IB = 92.6, 122.4
+IT, IB = 94.4, 122.4
 COL1 = (IX1 - 44, IX1)            # التاريخ
 COL2 = (COL1[0] - 30, COL1[0])    # الوقت
 COL3 = (COL2[0] - 61, COL2[0])    # المكان
@@ -92,20 +78,20 @@ for c in (COL1, COL2, COL3):
     line(c[0], IT + 4, c[0], IB - 4, sw=0.4)
 
 # map button (pill) under the place text
-BTN_W, BTN_H = 43.0, 5.9
+BTN_W, BTN_H = 43.0, 5.4
 BTN_X = (COL3[0] + COL3[1]) / 2 - BTN_W / 2
-BTN_Y = 114.8
+BTN_Y = 116.0
 rect(BTN_X, BTN_Y, BTN_W, BTN_H, fill="Gold", r=BTN_H / 2, link=MAPS_URL)
 
 # QR on a white rounded card
-QR_CARD = 22.0
+QR_CARD = 20.0
 QCX = (COL4[0] + COL4[1]) / 2
-QCY0 = 95.0
+QCY0 = 96.6
 rect(QCX - QR_CARD / 2, QCY0, QR_CARD, QR_CARD, fill="White", r=1.6, link=MAPS_URL)
 qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=1, border=0)
 qr.add_data(MAPS_URL); qr.make(fit=True)
 M = qr.get_matrix(); n = len(M)
-QR_MOD = 18.6 / n
+QR_MOD = 17.0 / n
 QRX, QRY = QCX - n * QR_MOD / 2, QCY0 + QR_CARD / 2 - n * QR_MOD / 2
 qr_paths = []
 for r_, row in enumerate(M):          # merge horizontal runs into rectangles
@@ -133,24 +119,25 @@ def T(id, lines, weight, size, lead, color, baseline, x=None, w=190.0, link=None
     texts.append(dict(id=id, lines=lines, weight=weight, size=size, lead=lead, color=color, baseline=baseline,
                       x=(CX - w / 2) if x is None else x, w=w, link=link))
 
-T("label", ["دعوة حضور"], 700, 15, 19, "Gold", 47.0, w=44)
-T("greet", ["يهديكم مجلس الأعمال العراقي–الأمريكي أطيب تحياته، ويتشرّف بدعوتكم لحضور"], 500, 10.5, 15, "Ivory", 55.8)
-T("title", ["حفل افتتاح مقر مجلس الأعمال العراقي–الأمريكي"], 700, 22, 27, "GoldLight", 66.6)
-T("date", ["وذلك يوم الأربعاء الموافق ٢١ تشرين الأول ٢٠٢٦"], 500, 11, 16, "White", 75.2)
+T("label", ["دعوة حضور"], 700, 15, 19, "Gold", 44.6, w=44)
+T("addressee", ["السادة أعضاء مجلس الأعمال العراقي–الأمريكي"], 700, 12.5, 16, "White", 52.4)
+T("greet", ["يهديكم مجلس الأعمال العراقي–الأمريكي أطيب تحياته، ويتشرّف بدعوتكم لحضور"], 500, 10.8, 15, "White", 59.8)
+T("title", ["حفل افتتاح مقر مجلس الأعمال العراقي–الأمريكي"], 700, 22, 27, "GoldLight", 71.0)
+T("date", ["وذلك يوم الأربعاء الموافق ٢١ تشرين الأول ٢٠٢٦"], 500, 11.2, 16, "White", 79.0)
 T("desc", ["يمثّل افتتاح المقر خطوةً نحو تعزيز التعاون الاقتصادي والتجاري بين العراق والولايات المتحدة الأمريكية،",
-           "وتوسيع التواصل والشراكات بين مجتمعي الأعمال في البلدين."], 400, 9.2, 13.4, "Ivory", 85.2)
-LBL_B = 98.4
+           "وتوسيع التواصل والشراكات بين مجتمعي الأعمال في البلدين."], 500, 9.6, 13.2, "White", 86.8)
+LBL_B = 100.2
 for cid, c, t in (("c1", COL1, "التاريخ"), ("c2", COL2, "الوقت"), ("c3", COL3, "المكان")):
-    T("lbl_" + cid, [t], 700, 9.2, 12, "Gold", LBL_B, x=c[0], w=c[1] - c[0])
-T("v1", ["الأربعاء", "٢١ تشرين الأول ٢٠٢٦"], 700, 10, 14, "White", 107.4, x=COL1[0], w=COL1[1] - COL1[0])
-T("v2", ["٦:٣٠ مساءً"], 700, 11, 14, "White", 111.0, x=COL2[0], w=COL2[1] - COL2[0])
-T("v3", ["المنصور – قرب الأقواس", "من جهة سيد الحبيب", "بناية أديداس"], 700, 9.4, 12.4, "White", 104.0,
+    T("lbl_" + cid, [t], 700, 9.4, 12, "Gold", LBL_B, x=c[0], w=c[1] - c[0])
+T("v1", ["الأربعاء", "٢١ تشرين الأول ٢٠٢٦"], 700, 10.2, 14, "White", 107.0, x=COL1[0], w=COL1[1] - COL1[0])
+T("v2", ["٦:٣٠ مساءً"], 700, 11.2, 14, "White", 111.0, x=COL2[0], w=COL2[1] - COL2[0])
+T("v3", ["المنصور – قرب الأقواس", "من جهة سيد الحبيب", "بناية أديداس"], 700, 9.6, 12.2, "White", 105.4,
   x=COL3[0], w=COL3[1] - COL3[0])
 T("btn", ["افتح الموقع على الخريطة"], 700, 7.8, 10, "Navy", BTN_Y + BTN_H / 2 + 1.0, x=BTN_X, w=BTN_W, link=MAPS_URL)
-T("qrcap", ["امسح الرمز للوصول إلى الموقع"], 500, 7.2, 9.5, "Ivory", 120.7, x=COL4[0], w=COL4[1] - COL4[0])
+T("qrcap", ["امسح الرمز للوصول إلى الموقع"], 700, 7.4, 9.5, "White", 120.4, x=COL4[0], w=COL4[1] - COL4[0])
 T("close", ["إن حضوركم الكريم يُسعدنا ويُضفي على هذه المناسبة مزيداً من الاعتزاز والتقدير.",
-            "وتفضّلوا بقبول فائق الاحترام والتقدير."], 400, 8.8, 12, "Ivory", 129.2)
-T("sign", ["مجلس الأعمال العراقي–الأمريكي"], 700, 9, 12, "Gold", 138.6)
+            "وتفضّلوا بقبول فائق الاحترام والتقدير."], 500, 9.2, 12.4, "White", 128.4)
+T("sign", ["مجلس الأعمال العراقي–الأمريكي"], 700, 9.4, 12, "GoldLight", 137.4)
 
 # ----------------------------------------------------------------- HTML (-> PDF / PNG)
 def svg_shapes():
@@ -173,9 +160,10 @@ def svg_shapes():
             out.append(f'<path d="{d}" {attrs}/>')
     return "\n".join(out)
 
-def html():
+def html(tx=None):
+    tx = texts if tx is None else tx
     blocks = []
-    for t in texts:
+    for t in tx:
         lines = "<br>".join(escape(l) for l in t["lines"])
         style = (f'left:{t["x"]:.3f}mm;width:{t["w"]:.3f}mm;font-weight:{t["weight"]};'
                  f'font-size:{t["size"]}pt;line-height:{t["lead"]}pt;color:{hexc(COLORS[t["color"]])};')
@@ -393,7 +381,36 @@ def build_idml(path):
                     z.write(full, rel, compress_type=zipfile.ZIP_DEFLATED)
     shutil.rmtree(work)
 
+def personalised(addressee):
+    """Copy of the text blocks with the addressee line replaced + 'please confirm attendance' line."""
+    import copy
+    tx = copy.deepcopy(texts)
+    for t in tx:
+        if t["id"] == "addressee":
+            t["lines"] = [addressee]
+    for t in tx:                                   # make room for the extra line at the bottom
+        if t["id"] == "close": t["baseline"] = 127.2
+        if t["id"] == "sign": t["baseline"] = 135.8
+    tx.append(dict(id="rsvp", lines=["يرجى تأكيد الحضور"], weight=700, size=10.4, lead=12, color="White",
+                   baseline=140.8, x=CX - 40, w=80.0, link=None))
+    return tx
+
+def safe(name):
+    return re.sub(r'[\\/:*?"<>|\s]+', "_", name).strip("_")
+
 if __name__ == "__main__":
+    import json, sys
     open(os.path.join(HERE, "invitation.html"), "w", encoding="utf-8").write(html())
     build_idml(os.path.join(OUT, NAME + ".idml"))
-    print("html + idml written")
+    jobs = [{"html": "invitation.html", "pdf": os.path.join(OUT, NAME + ".pdf"), "png": os.path.join(OUT, NAME + ".png")}]
+    names_file = os.path.join(HERE, "names.txt")
+    if os.path.exists(names_file):
+        names = [l.strip() for l in open(names_file, encoding="utf-8") if l.strip() and not l.startswith("#")]
+        cards = os.path.join(OUT, "named_cards"); os.makedirs(cards, exist_ok=True)
+        tmp = os.path.join(HERE, "_cards"); os.makedirs(tmp, exist_ok=True)
+        for k, nm in enumerate(names, 1):
+            h = os.path.join(tmp, f"card_{k:02d}.html")
+            open(h, "w", encoding="utf-8").write(html(personalised(nm)).replace("src=\"", "src=\"../").replace("../Fonts", "../../Fonts").replace("url('../../Fonts", "url('../../Fonts"))
+            jobs.append({"html": os.path.relpath(h, HERE), "pdf": os.path.join(cards, f"{k:02d}_{safe(nm)}.pdf")})
+    json.dump(jobs, open(os.path.join(HERE, "jobs.json"), "w"))
+    print("html + idml written;", len(jobs) - 1, "named cards queued")

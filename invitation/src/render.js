@@ -1,18 +1,21 @@
-// node render.js  -> IUSBC_Invitation.pdf + IUSBC_Invitation.png (via Chromium)
+// node render.js  -> renders every job in jobs.json (pdf, optional png) via Chromium
 const path = require('path');
+const fs = require('fs');
 const { chromium } = require('playwright');
 
 (async () => {
   const here = __dirname;
-  const out = path.join(here, '..');
+  const jobs = JSON.parse(fs.readFileSync(path.join(here, 'jobs.json'), 'utf8'));
   const browser = await chromium.launch();
   const ctx = await browser.newContext({ deviceScaleFactor: 4, viewport: { width: 794, height: 560 } });
-  const page = await ctx.newPage();
-  await page.goto('file://' + path.join(here, 'invitation.html'));
-  await page.waitForSelector('body[data-ready="1"]');
-  await page.screenshot({ path: path.join(out, 'IUSBC_Invitation.png'), clip: { x: 0, y: 0, width: 793.7, height: 559.4 } });
-  await page.pdf({ path: path.join(out, 'IUSBC_Invitation.pdf'), width: '210mm', height: '148mm',
-                   printBackground: true, preferCSSPageSize: true });
+  for (const j of jobs) {
+    const page = await ctx.newPage();
+    await page.goto('file://' + path.join(here, j.html));
+    await page.waitForSelector('body[data-ready="1"]');
+    if (j.png) await page.screenshot({ path: j.png, clip: { x: 0, y: 0, width: 793.7, height: 559.4 } });
+    await page.pdf({ path: j.pdf, width: '210mm', height: '148mm', printBackground: true, preferCSSPageSize: true });
+    await page.close();
+  }
   await browser.close();
-  console.log('pdf + png written');
+  console.log('rendered', jobs.length, 'file(s)');
 })();
