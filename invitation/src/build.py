@@ -24,9 +24,9 @@ FONT_STYLE = {400: "Regular", 500: "Medium", 700: "Bold"}
 W, H = 210.0, 148.0           # mm  (A5 landscape)
 BLEED = 3.0
 PT = 72 / 25.4                # mm -> pt
-NAVY, GOLD, GOLD_L = (11, 42, 85), (205, 164, 73), (232, 203, 124)
-IVORY, WHITE = (245, 238, 220), (255, 255, 255)
-COLORS = {"Navy": NAVY, "Gold": GOLD, "GoldLight": GOLD_L, "Ivory": IVORY, "White": WHITE}
+NAVY, GOLD, GOLD_DEEP = (11, 42, 85), (190, 150, 58), (136, 98, 18)
+PAPER, WHITE = (252, 249, 240), (255, 255, 255)
+COLORS = {"Navy": NAVY, "Gold": GOLD, "GoldDeep": GOLD_DEEP, "Paper": PAPER, "White": WHITE}
 hexc = lambda c: "#%02x%02x%02x" % c
 
 HEAD_H = 32.0                 # white header with the two logos
@@ -47,8 +47,8 @@ def poly(paths, fill=None, stroke=None, sw=0.5, op=100):
 def diamond(cx, cy, r, fill="Gold"):
     poly([[(cx, cy - r), (cx + r, cy), (cx, cy + r), (cx - r, cy)]], fill=fill)
 
-# navy body (bleeds left / right / bottom)
-rect(-BLEED, HEAD_H, W + 2 * BLEED, H - HEAD_H + BLEED, fill="Navy")
+# light body (bleeds left / right / bottom)
+rect(-BLEED, HEAD_H, W + 2 * BLEED, H - HEAD_H + BLEED, fill="Paper")
 
 # frame geometry (inside the navy body)
 FX0, FX1, FY0, FY1 = 5.0, W - 5.0, HEAD_H + 4.4, H - 3.2
@@ -81,13 +81,13 @@ for c in (COL1, COL2, COL3):
 BTN_W, BTN_H = 43.0, 5.4
 BTN_X = (COL3[0] + COL3[1]) / 2 - BTN_W / 2
 BTN_Y = 116.0
-rect(BTN_X, BTN_Y, BTN_W, BTN_H, fill="Gold", r=BTN_H / 2, link=MAPS_URL)
+rect(BTN_X, BTN_Y, BTN_W, BTN_H, fill="Navy", r=BTN_H / 2, link=MAPS_URL)
 
 # QR on a white rounded card
 QR_CARD = 20.0
 QCX = (COL4[0] + COL4[1]) / 2
 QCY0 = 96.6
-rect(QCX - QR_CARD / 2, QCY0, QR_CARD, QR_CARD, fill="White", r=1.6, link=MAPS_URL)
+rect(QCX - QR_CARD / 2, QCY0, QR_CARD, QR_CARD, fill="White", stroke="Gold", sw=0.7, r=1.6, link=MAPS_URL)
 qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=1, border=0)
 qr.add_data(MAPS_URL); qr.make(fit=True)
 M = qr.get_matrix(); n = len(M)
@@ -119,25 +119,25 @@ def T(id, lines, weight, size, lead, color, baseline, x=None, w=190.0, link=None
     texts.append(dict(id=id, lines=lines, weight=weight, size=size, lead=lead, color=color, baseline=baseline,
                       x=(CX - w / 2) if x is None else x, w=w, link=link))
 
-T("label", ["دعوة حضور"], 700, 15, 19, "Gold", 44.6, w=44)
-T("addressee", ["السادة أعضاء مجلس الأعمال العراقي–الأمريكي"], 700, 12.5, 16, "White", 52.4)
-T("greet", ["يهديكم مجلس الأعمال العراقي–الأمريكي أطيب تحياته، ويتشرّف بدعوتكم لحضور"], 500, 10.8, 15, "White", 59.8)
-T("title", ["حفل افتتاح مقر مجلس الأعمال العراقي–الأمريكي"], 700, 22, 27, "GoldLight", 71.0)
-T("date", ["وذلك يوم الأربعاء الموافق ٢١ تشرين الأول ٢٠٢٦"], 500, 11.2, 16, "White", 79.0)
+T("label", ["دعوة حضور"], 700, 15, 19, "GoldDeep", 44.6, w=44)
+T("addressee", ["السادة أعضاء مجلس الأعمال العراقي–الأمريكي"], 700, 12.5, 16, "Navy", 52.4)
+T("greet", ["يهديكم مجلس الأعمال العراقي–الأمريكي أطيب تحياته، ويتشرّف بدعوتكم لحضور"], 500, 10.8, 15, "Navy", 59.8)
+T("title", ["حفل افتتاح مقر مجلس الأعمال العراقي–الأمريكي"], 700, 22, 27, "Navy", 71.0)
+T("date", ["وذلك يوم الأربعاء الموافق ٢١ تشرين الأول ٢٠٢٦"], 500, 11.2, 16, "Navy", 79.0)
 T("desc", ["يمثّل افتتاح المقر خطوةً نحو تعزيز التعاون الاقتصادي والتجاري بين العراق والولايات المتحدة الأمريكية،",
-           "وتوسيع التواصل والشراكات بين مجتمعي الأعمال في البلدين."], 500, 9.6, 13.2, "White", 86.8)
+           "وتوسيع التواصل والشراكات بين مجتمعي الأعمال في البلدين."], 500, 9.6, 13.2, "Navy", 86.8)
 LBL_B = 100.2
 for cid, c, t in (("c1", COL1, "التاريخ"), ("c2", COL2, "الوقت"), ("c3", COL3, "المكان")):
-    T("lbl_" + cid, [t], 700, 9.4, 12, "Gold", LBL_B, x=c[0], w=c[1] - c[0])
-T("v1", ["الأربعاء", "٢١ تشرين الأول ٢٠٢٦"], 700, 10.2, 14, "White", 107.0, x=COL1[0], w=COL1[1] - COL1[0])
-T("v2", ["٦:٣٠ مساءً"], 700, 11.2, 14, "White", 111.0, x=COL2[0], w=COL2[1] - COL2[0])
-T("v3", ["المنصور – قرب الأقواس", "من جهة سيد الحبيب", "بناية أديداس"], 700, 9.6, 12.2, "White", 105.4,
+    T("lbl_" + cid, [t], 700, 9.4, 12, "GoldDeep", LBL_B, x=c[0], w=c[1] - c[0])
+T("v1", ["الأربعاء", "٢١ تشرين الأول ٢٠٢٦"], 700, 10.2, 14, "Navy", 107.0, x=COL1[0], w=COL1[1] - COL1[0])
+T("v2", ["٦:٣٠ مساءً"], 700, 11.2, 14, "Navy", 111.0, x=COL2[0], w=COL2[1] - COL2[0])
+T("v3", ["المنصور – قرب الأقواس", "من جهة سيد الحبيب", "بناية أديداس"], 700, 9.6, 12.2, "Navy", 105.4,
   x=COL3[0], w=COL3[1] - COL3[0])
-T("btn", ["افتح الموقع على الخريطة"], 700, 7.8, 10, "Navy", BTN_Y + BTN_H / 2 + 1.0, x=BTN_X, w=BTN_W, link=MAPS_URL)
-T("qrcap", ["امسح الرمز للوصول إلى الموقع"], 700, 7.4, 9.5, "White", 120.4, x=COL4[0], w=COL4[1] - COL4[0])
+T("btn", ["افتح الموقع على الخريطة"], 700, 7.8, 10, "White", BTN_Y + BTN_H / 2 + 1.0, x=BTN_X, w=BTN_W, link=MAPS_URL)
+T("qrcap", ["امسح الرمز للوصول إلى الموقع"], 700, 7.4, 9.5, "Navy", 120.4, x=COL4[0], w=COL4[1] - COL4[0])
 T("close", ["إن حضوركم الكريم يُسعدنا ويُضفي على هذه المناسبة مزيداً من الاعتزاز والتقدير.",
-            "وتفضّلوا بقبول فائق الاحترام والتقدير."], 500, 9.2, 12.4, "White", 128.4)
-T("sign", ["مجلس الأعمال العراقي–الأمريكي"], 700, 9.4, 12, "GoldLight", 137.4)
+            "وتفضّلوا بقبول فائق الاحترام والتقدير."], 500, 9.2, 12.4, "Navy", 128.4)
+T("sign", ["مجلس الأعمال العراقي–الأمريكي"], 700, 9.4, 12, "GoldDeep", 137.4)
 
 # ----------------------------------------------------------------- HTML (-> PDF / PNG)
 def svg_shapes():
@@ -391,7 +391,7 @@ def personalised(addressee):
     for t in tx:                                   # make room for the extra line at the bottom
         if t["id"] == "close": t["baseline"] = 127.2
         if t["id"] == "sign": t["baseline"] = 135.8
-    tx.append(dict(id="rsvp", lines=["يرجى تأكيد الحضور"], weight=700, size=10.4, lead=12, color="White",
+    tx.append(dict(id="rsvp", lines=["يرجى تأكيد الحضور"], weight=700, size=10.4, lead=12, color="GoldDeep",
                    baseline=140.8, x=CX - 40, w=80.0, link=None))
     return tx
 
