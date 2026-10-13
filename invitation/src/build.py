@@ -47,9 +47,8 @@ def poly(paths, fill=None, stroke=None, sw=0.5, op=100):
 def diamond(cx, cy, r, fill="Gold"):
     poly([[(cx, cy - r), (cx + r, cy), (cx, cy + r), (cx - r, cy)]], fill=fill)
 
-# navy body (bleeds left / right / bottom) + gold strip under the header
+# navy body (bleeds left / right / bottom)
 rect(-BLEED, HEAD_H, W + 2 * BLEED, H - HEAD_H + BLEED, fill="Navy")
-rect(-BLEED, HEAD_H, W + 2 * BLEED, 1.1, fill="Gold")
 
 # frame geometry (inside the navy body)
 FX0, FX1, FY0, FY1 = 5.0, W - 5.0, HEAD_H + 4.6, H - 4.0
