@@ -67,30 +67,18 @@ for i in range(TX):
         stars.append([(cx, cy - R), (cx + R, cy), (cx, cy + R), (cx - R, cy)])
 poly(stars, stroke="Gold", sw=0.4, op=10)
 
-# double gold frame + corner diamonds
+# double gold frame
 rect(FX0, FY0, FX1 - FX0, FY1 - FY0, stroke="Gold", sw=0.9)
 rect(FX0 + 1.3, FY0 + 1.3, FX1 - FX0 - 2.6, FY1 - FY0 - 2.6, stroke="Gold", sw=0.35)
-for (dx, dy) in [(FX0, FY0), (FX1, FY0), (FX0, FY1), (FX1, FY1)]:
-    diamond(dx, dy, 1.7)
 
-# header: two logos side by side + gold ornament lines on both sides
+# header: two logos side by side
 LOGO_S = 30.0
 IUSBC_BOX = (CX + 4.0, 2.0, LOGO_S)       # council logo, on the right (RTL start)
 FICC_BOX = (CX - 4.0 - LOGO_S, 2.0, LOGO_S)
 HLY = 17.0
 line(CX, 6, CX, HEAD_H - 6, sw=0.5)
-line(14.5, HLY, FICC_BOX[0] + 1, HLY, sw=0.6)
-line(IUSBC_BOX[0] + LOGO_S - 1, HLY, W - 14.5, HLY, sw=0.6)
-diamond(12.4, HLY, 1.3); diamond(W - 12.4, HLY, 1.3)
 
-# label ornament  — ◆ دعوة حضور ◆ —
-LY = 44.3
-line(FX0 + 14, LY, CX - 22, LY, sw=0.6); line(CX + 22, LY, FX1 - 14, LY, sw=0.6)
-diamond(CX - 24.2, LY, 1.1); diamond(CX + 24.2, LY, 1.1)
 
-# divider under the date sentence
-DY = 79.0
-line(CX - 30, DY, CX - 4, DY, sw=0.5); line(CX + 4, DY, CX + 30, DY, sw=0.5); diamond(CX, DY, 1.2)
 
 # info row : date | time | place(+button) | QR
 IX0, IX1 = FX0 + 10, FX1 - 10
